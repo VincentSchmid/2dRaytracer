@@ -12,6 +12,13 @@
 
 #endif
 
+#ifndef Shape_h
+#define Shape_h
+
+#include "Shape.hpp"
+
+ #endif
+
 #include <iostream>
 
 
@@ -19,12 +26,12 @@ class Collision
 {
     private:
         std::list<LightRay> *rays;
-        Mirror *mirror;
+        Shape *shape;
     
     public:
-        Collision(std::list<LightRay> *rays, Mirror *mirror)
+        Collision(std::list<LightRay> *rays, Shape *shape)
         : rays(rays)
-        , mirror(mirror)
+        , shape(shape)
         {};
 
         void check();
@@ -35,9 +42,9 @@ void Collision::check()
     std::list<LightRay>::iterator it;
     for (it = rays->begin(); it != rays->end(); ++it)
     {
-        if (mirror->isColliding( &(*it) ))
+        if (shape->isColliding( &(*it) ))
         {
-            mirror->collide(&(*it));
+            shape->collide(&(*it));
         }
     }
 }

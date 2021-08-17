@@ -26,6 +26,13 @@
 
 #endif
 
+#ifndef Circle_h
+#define Circle_h
+
+#include "Circle.hpp"
+
+#endif
+
 #define SCREEN_HEIGHT 450
 
 
@@ -52,10 +59,13 @@ int main(void)
     float cameraX = 0.0f;
     float cameraY = 0.0f;
 
-    Mirror mirror = Mirror({300, 225}, {-1.0f, .60f}, 200.0f);
-    std::list<LightRay> directionalLight =  getDirectionalLightRays( {100, 215}, 300, {1, -.1}, 21, 1);
+    Mirror mirror = Mirror({300, 225}, {1.0f, .60f}, 200.0f);
+    Circle circle = Circle({300, 215}, 100);
 
-    Collision coll = Collision(&directionalLight, &mirror);
+    std::list<LightRay> directionalLight =  getDirectionalLightRays( {100, 215}, 300, {1, -.1}, 51, 1);
+
+    Collision coll = Collision(&directionalLight, &circle);
+    
 
     SetTargetFPS(60);
     int i = 0;
@@ -78,10 +88,11 @@ int main(void)
 
             BeginMode2D(screenSpaceCamera);
                 drawRays(&directionalLight);
-                mirror.draw();
+                //mirror.draw();
+                circle.draw();
             EndMode2D();
 
-            DrawText(TextFormat("Light Position: %ix%i", (int)directionalLight.front().position.X, (int)directionalLight.front().position.Y), 10, 10, 20, DARKBLUE);
+            //DrawText(TextFormat("Light Position: %ix%i", (int)directionalLight.front().position.X, (int)directionalLight.front().position.Y), 10, 10, 20, DARKBLUE);
             //DrawText(TextFormat("Light next Position: %ix%i", (int)directionalLight.front().nextPosition.X, (int)directionalLight.front().nextPosition.Y), 10, 40, 20, DARKBLUE);
             //DrawText(TextFormat("Step Counts: %i", lr.positions.size()), 10, 40, 20, DARKGREEN);
             DrawFPS(GetScreenWidth() - 95, 10);

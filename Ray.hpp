@@ -29,12 +29,23 @@
 
 struct LightRay 
 {
+    LightRay(MathX::Vector2 direction, MathX::Vector2 position, float refractionIndex)
+    : direction(direction)
+    , position(position)
+    , refractionIndex(refractionIndex)
+    {
+        direction.Normalize();
+        nextPosition = position;
+        prevDirection = direction;
+        positions = { position, position };
+    }
+
     MathX::Vector2 direction; // also referred to as l
     MathX::Vector2 position; // refered to as p
     float refractionIndex; // refered to as ior or n
-    MathX::Vector2 nextPosition = position;
-    MathX::Vector2 prevDirection = direction;
-    std::list<MathX::Vector2> positions = { position, position };
+    MathX::Vector2 nextPosition;
+    MathX::Vector2 prevDirection;
+    std::list<MathX::Vector2> positions;
 };
     
 void step(LightRay *ray, float deltaTime)
@@ -87,7 +98,6 @@ void drawRays(std::list<LightRay> *rays)
     }
 }
 
-
 std::list<LightRay> getDirectionalLightRays(Vector2 position, int width, Vector2 direction, int rayCount, float refractionIndex)
 {
     std::list<LightRay> lightRays = {};
@@ -117,9 +127,9 @@ std::list<LightRay> getDirectionalLightRays(Vector2 position, int width, Vector2
 
 void reflect(LightRay *ray, MathX::Vector2 normal)
 {
-    normal.Normalize();
     ray->prevDirection = ray->direction;
     ray->direction -= 2 * ray->direction.Dot(normal) * normal;
+    ray->direction.Normalize();
 }
 
 void refract(LightRay *ray, MathX::Vector2 normal, float refractionIndex)
