@@ -136,7 +136,13 @@ void refract(LightRay *ray, MathX::Vector2 normal, float refractionIndex1, float
 {
     float roi = refractionIndex1 / refractionIndex2;
     ray->prevDirection = ray->direction;
-    float c = normal.Dot(ray->direction);
+
+    if (ray->direction.Dot(normal) < 0)
+    {
+        normal = -normal;
+    }
+
+    float c = ray->direction.Dot(normal);
 
     float d = 1.0f - roi * roi * (1.0f - c * c);
 
@@ -150,7 +156,7 @@ void refract(LightRay *ray, MathX::Vector2 normal, float refractionIndex1, float
         // if the ray is inside the lense the normal needs to be reversed for the direction calculation
         float normal_direction = c > 0 ? -1.0f : 1.0f;
 
-        ray->direction = roi * ray->direction + (roi * c - sqrt(d)) * (normal_direction * normal);
+        ray->direction = roi * ray->direction + (roi * c - sqrt(d)) * normal;
         ray->direction.Normalize();
         ray->refractionIndex = refractionIndex2;
     }
