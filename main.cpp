@@ -33,17 +33,17 @@
 
 #endif
 
-#define SCREEN_HEIGHT 450
+#define SCREEN_HEIGHT 900
 
 
 int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 800;
+    const int screenWidth = 1600;
     const int screenHeight = SCREEN_HEIGHT;
 
-    const int virtualScreenWidth = 800;
+    const int virtualScreenWidth = 1600;
     const int virtualScreenHeight = SCREEN_HEIGHT;
 
     const float virtualRatio = (float)screenWidth/(float)virtualScreenWidth;
@@ -59,10 +59,10 @@ int main(void)
     float cameraX = 0.0f;
     float cameraY = 0.0f;
 
-    Mirror mirror = Mirror({300, 225}, {1.0f, .60f}, 200.0f);
-    Circle circle = Circle({300, 215}, 100);
+    Mirror mirror = Mirror({300, 225}, {.70f, .60f}, 200.0f);
+    Circle circle = Circle({800, 415}, 400);
 
-    std::list<LightRay> directionalLight =  getDirectionalLightRays( {100, 215}, 300, {1, -.1}, 51, 1);
+    std::list<LightRay> directionalLight =  getDirectionalLightRays( {100, 515}, 600, {1, -.1}, 200, 1);
 
     Collision coll = Collision(&directionalLight, &circle);
     
@@ -80,8 +80,11 @@ int main(void)
             std::cout << directionalLight.front().positions.size() << std::endl;
         }
 
-        coll.check();
-        step(&directionalLight, GetFrameTime() * 100);
+        for (size_t i = 0; i < 100; i++)
+        {
+            coll.check();
+            step(&directionalLight, GetFrameTime() * 10);
+        }
         
         BeginDrawing();
             ClearBackground(BLACK);

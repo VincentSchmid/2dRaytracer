@@ -12,6 +12,13 @@
 
 #endif
 
+#ifndef helpers_h
+#define helpers_h
+
+#include "helpers.hpp"
+
+#endif
+
 
 class Circle : public Shape
 {
@@ -35,21 +42,30 @@ void Circle::draw()
 
 void Circle::collide(LightRay *ray)
 {
-    float roi;
-    MathX::Vector2 nrml;
+    float roi1, roi2;
+    MathX::Vector2 nrml = ray->position - position;
+    nrml.Normalize();
 
-    if (collisionEnter(ray))
+    if (nrml.Dot(ray->direction) > 0)
     {
-        roi = 1.49f;
-        nrml = ray->position - position;
+        // entering
+        roi1 = 1.0f;
+        roi2 = 1.4f;
     } else
     {
-        roi = 1.0f;
-        nrml = position - ray->position;
+        /*
+        PrintVector(ray->position, "ray_pos");
+        PrintVector(ray->direction, "ray_dir");
+        PrintVector(position, "lense pos");
+        PrintVector(nrml, "surface normal");
+        */
+
+       // exiting
+        roi1 = 1.4f;
+        roi2 = 1.0f;
     }
     
-    nrml.Normalize();
-    refract(ray, nrml, roi);
+    refract(ray, nrml, roi1, roi2);
 }
 
 bool Circle::collisionEnter(LightRay *ray)

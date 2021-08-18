@@ -62,7 +62,7 @@ void Mirror::draw()
 
 void Mirror::collide(LightRay *ray)
 {  
-    refract(ray, normal, 1.33f);
+    refract(ray, normal, 1.0f, 1.33f);
 }
 
 bool Mirror::isColliding(LightRay *ray)

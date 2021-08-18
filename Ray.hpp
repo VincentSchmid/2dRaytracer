@@ -132,12 +132,13 @@ void reflect(LightRay *ray, MathX::Vector2 normal)
     ray->direction.Normalize();
 }
 
-void refract(LightRay *ray, MathX::Vector2 normal, float refractionIndex)
+void refract(LightRay *ray, MathX::Vector2 normal, float refractionIndex1, float refractionIndex2)
 {
+    float roi = refractionIndex1 / refractionIndex2;
     ray->prevDirection = ray->direction;
+    float c = normal.Dot(ray->direction);
 
-    float c = (-normal).Dot(ray->direction);
-    float d = 1.0f - refractionIndex * refractionIndex * (1.0f - c * c);
+    float d = 1.0f - roi * roi * (1.0f - c * c);
 
     // Total Internal Reflection
     // Angle of ray is too shallow to exit medium
@@ -146,7 +147,11 @@ void refract(LightRay *ray, MathX::Vector2 normal, float refractionIndex)
         reflect(ray, -normal);
     } else
     {
-        ray->direction = refractionIndex * ray->direction + (refractionIndex * c - sqrt(d)) * normal;
-        ray->refractionIndex = refractionIndex;
+        // if the ray is inside the lense the normal needs to be reversed for the direction calculation
+        float normal_direction = c > 0 ? -1.0f : 1.0f;
+
+        ray->direction = roi * ray->direction + (roi * c - sqrt(d)) * (normal_direction * normal);
+        ray->direction.Normalize();
+        ray->refractionIndex = refractionIndex2;
     }
 }
