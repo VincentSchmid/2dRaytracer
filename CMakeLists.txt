@@ -13,8 +13,10 @@ LINK_DIRECTORIES(
 
 add_executable(RaylibInit main.cpp)
 
+find_package(Eigen3 CONFIG REQUIRED)
+
 TARGET_LINK_LIBRARIES(RaylibInit
-    raylib mathLib
+    raylib mathLib Eigen3::Eigen
 )
 
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi")

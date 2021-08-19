@@ -50,7 +50,7 @@
 			{
 				"command" : 3,
 				"file" : 1,
-				"line" : 16,
+				"line" : 18,
 				"parent" : 0
 			},
 			{
@@ -79,6 +79,11 @@
 				{
 					"backtrace" : 5,
 					"path" : "C:/dev/MathX/mathLib"
+				},
+				{
+					"backtrace" : 4,
+					"isSystem" : true,
+					"path" : "C:/dev/vcpkg/installed/x64-windows/share/eigen3/../../include/eigen3"
 				}
 			],
 			"language" : "CXX",

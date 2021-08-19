@@ -23,12 +23,13 @@
 class Circle : public Shape
 {
     public:
-        Circle(MathX::Vector2 position, float size) 
-        : Shape(position, size) {};
+        Circle(MathX::Vector2 position, float size, Surface *surface) 
+        : Shape(position, size, surface) {};
 
         void draw();
-        void collide(LightRay *ray);
         bool isColliding(LightRay *ray);
+        bool isInside(LightRay *ray);
+        MathX::Vector2 getNormal(MathX::Vector2 rayPosition);
 
     private:
         bool collisionEnter(LightRay *ray);
@@ -37,35 +38,15 @@ class Circle : public Shape
 
 void Circle::draw()
 {
-    DrawCircleCorrected(position.X, position.Y, size, BLUE);
+    DrawCircleCorrected(position.X, position.Y, size, toRayLibColor(surface->color));
 }
 
-void Circle::collide(LightRay *ray)
+MathX::Vector2 Circle::getNormal(MathX::Vector2 rayPosition)
 {
-    float roi1, roi2;
-    MathX::Vector2 nrml = ray->position - position;
-    nrml.Normalize();
+    MathX::Vector2 normal = rayPosition - position;
+    normal.Normalize();
 
-    if (nrml.Dot(ray->direction) > 0)
-    {
-        // entering
-        roi1 = 1.0f;
-        roi2 = 1.4f;
-    } else
-    {
-        /*
-        PrintVector(ray->position, "ray_pos");
-        PrintVector(ray->direction, "ray_dir");
-        PrintVector(position, "lense pos");
-        PrintVector(nrml, "surface normal");
-        */
-
-       // exiting
-        roi1 = 1.4f;
-        roi2 = 1.0f;
-    }
-    
-    refract(ray, nrml, roi1, roi2);
+    return normal;
 }
 
 bool Circle::collisionEnter(LightRay *ray)
@@ -76,6 +57,11 @@ bool Circle::collisionEnter(LightRay *ray)
 bool Circle::collisionExit(LightRay *ray)
 {
     return ray->position.Distance(this->position) < size && ray->nextPosition.Distance(this->position) > size;
+}
+
+bool Circle::isInside(LightRay *ray)
+{
+    return getNormal(ray->position).Dot(ray->direction) > 0;
 }
 
 bool Circle::isColliding(LightRay *ray)

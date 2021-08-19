@@ -1334,6 +1334,18 @@
 			"value" : "1500"
 		},
 		{
+			"name" : "Eigen3_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "The directory containing a CMake configuration file for Eigen3."
+				}
+			],
+			"type" : "PATH",
+			"value" : "C:/dev/vcpkg/installed/x64-windows/share/eigen3"
+		},
+		{
 			"name" : "GITCOMMAND",
 			"properties" : 
 			[

@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "MinSizeRel/RaylibInit.exe"
+			"path" : "Release/RaylibInit.exe"
 		},
 		{
-			"path" : "MinSizeRel/RaylibInit.pdb"
+			"path" : "Release/RaylibInit.pdb"
 		}
 	],
 	"backtrace" : 2,
@@ -50,7 +50,7 @@
 			{
 				"command" : 3,
 				"file" : 1,
-				"line" : 16,
+				"line" : 18,
 				"parent" : 0
 			},
 			{
@@ -67,7 +67,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /O1 /Ob1 /DNDEBUG"
+					"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /O2 /Ob2 /DNDEBUG"
 				}
 			],
 			"includes" : 
@@ -79,6 +79,11 @@
 				{
 					"backtrace" : 5,
 					"path" : "C:/dev/MathX/mathLib"
+				},
+				{
+					"backtrace" : 4,
+					"isSystem" : true,
+					"path" : "C:/dev/vcpkg/installed/x64-windows/share/eigen3/../../include/eigen3"
 				}
 			],
 			"language" : "CXX",
@@ -100,7 +105,7 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /O1 /Ob1 /DNDEBUG",
+				"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /O2 /Ob2 /DNDEBUG",
 				"role" : "flags"
 			},
 			{

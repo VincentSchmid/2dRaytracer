@@ -29,10 +29,12 @@
 
 struct LightRay 
 {
-    LightRay(MathX::Vector2 direction, MathX::Vector2 position, float refractionIndex)
+    LightRay(MathX::Vector2 direction, MathX::Vector2 position, float refractionIndex, float intensity, MathX::Color color)
     : direction(direction)
     , position(position)
     , refractionIndex(refractionIndex)
+    , intensity(intensity)
+    , color(color)
     {
         direction.Normalize();
         nextPosition = position;
@@ -43,6 +45,8 @@ struct LightRay
     MathX::Vector2 direction; // also referred to as l
     MathX::Vector2 position; // refered to as p
     float refractionIndex; // refered to as ior or n
+    float intensity;
+    MathX::Color color;
     MathX::Vector2 nextPosition;
     MathX::Vector2 prevDirection;
     std::list<MathX::Vector2> positions;
@@ -83,7 +87,8 @@ void drawRay(LightRay *ray)
 
     for (it = std::next(ray->positions.begin()); it != ray->positions.end(); ++it)
     {
-        DrawLineCorrected(prevPos.X, prevPos.Y, it->X, it->Y, WHITE);
+        ray->color.A = ray->intensity * 255;
+        DrawLineCorrected(prevPos.X, prevPos.Y, it->X, it->Y, toRayLibColor(ray->color));
         prevPos = {it->X, it->Y};
     }
 }
@@ -113,13 +118,13 @@ std::list<LightRay> getDirectionalLightRays(Vector2 position, int width, Vector2
     
     for (size_t i = 0; i < isOdd; i++)
     {
-        lightRays.push_front({dir, pos, refractionIndex});
+        lightRays.push_front({dir, pos, refractionIndex, 1.0f, {255, 255, 255, 255}});
     }
     
     for (int i = 0; i < (rayCount - isOdd) / 2; i++)
     {
-        lightRays.push_front({dir, pos + (left * spacing * (1.0f + i)), refractionIndex});
-        lightRays.push_front({dir, pos + (right * spacing * (1.0f + i)), refractionIndex});
+        lightRays.push_front({dir, pos + (left * spacing * (1.0f + i)), refractionIndex, 1.0f, {255, 255, 255, 255}});
+        lightRays.push_front({dir, pos + (right * spacing * (1.0f + i)), refractionIndex, 1.0f, {255, 255, 255, 255}});
     }
         
     return lightRays;
@@ -132,17 +137,17 @@ void reflect(LightRay *ray, MathX::Vector2 normal)
     ray->direction.Normalize();
 }
 
-void refract(LightRay *ray, MathX::Vector2 normal, float refractionIndex1, float refractionIndex2)
+void refract(LightRay *ray, MathX::Vector2 normal, float refractionIndex2)
 {
-    float roi = refractionIndex1 / refractionIndex2;
+    float roi = ray->refractionIndex / refractionIndex2;
     ray->prevDirection = ray->direction;
 
-    if (ray->direction.Dot(normal) < 0)
+    if (-ray->direction.Dot(normal) < 0)
     {
         normal = -normal;
     }
 
-    float c = ray->direction.Dot(normal);
+    float c = -ray->direction.Dot(normal);
 
     float d = 1.0f - roi * roi * (1.0f - c * c);
 
@@ -153,11 +158,15 @@ void refract(LightRay *ray, MathX::Vector2 normal, float refractionIndex1, float
         reflect(ray, -normal);
     } else
     {
-        // if the ray is inside the lense the normal needs to be reversed for the direction calculation
-        float normal_direction = c > 0 ? -1.0f : 1.0f;
-
         ray->direction = roi * ray->direction + (roi * c - sqrt(d)) * normal;
         ray->direction.Normalize();
         ray->refractionIndex = refractionIndex2;
     }
+}
+
+void scatter(LightRay *ray, MathX::Vector2 normal, MathX::Color surfaceColor)
+{
+    ray->color *= surfaceColor;
+    ray->prevDirection = ray->direction;
+    ray->direction.Zero();
 }

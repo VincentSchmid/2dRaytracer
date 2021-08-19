@@ -38,9 +38,6 @@ class Mirror
         {
             leftCorner = normal.PerpendicularCounterClockwise() * (size / 2.0f) + position;
             rightCorner = normal.PerpendicularClockwise() * (size / 2.0f) + position;
-
-            leftCorner.Print();
-            rightCorner.Print();
         };
 
         void draw();
@@ -62,7 +59,7 @@ void Mirror::draw()
 
 void Mirror::collide(LightRay *ray)
 {  
-    refract(ray, normal, 1.0f, 1.33f);
+    refract(ray, normal, 1.33f);
 }
 
 bool Mirror::isColliding(LightRay *ray)

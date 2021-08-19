@@ -59,10 +59,12 @@ int main(void)
     float cameraX = 0.0f;
     float cameraY = 0.0f;
 
-    Mirror mirror = Mirror({300, 225}, {.70f, .60f}, 200.0f);
-    Circle circle = Circle({800, 415}, 400);
+    struct Surface glass = {0.0f, 1.0f, 0.0f, 1.43f, toMathXColor(Blue)};
 
-    std::list<LightRay> directionalLight =  getDirectionalLightRays( {100, 515}, 600, {1, -.1}, 200, 1);
+    Mirror mirror = Mirror({300, 225}, {.70f, .60f}, 200.0f);
+    Circle circle = Circle({800, 415}, 400, &glass);
+
+    std::list<LightRay> directionalLight =  getDirectionalLightRays( {100, 450}, 400, {1, 0}, 101, 1);
 
     Collision coll = Collision(&directionalLight, &circle);
     
@@ -77,27 +79,27 @@ int main(void)
 
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
-            std::cout << directionalLight.front().positions.size() << std::endl;
+            std::cout << coll.rays->front().positions.size() << std::endl;
         }
 
         for (size_t i = 0; i < 100; i++)
         {
             coll.check();
-            step(&directionalLight, GetFrameTime() * 10);
+            step(coll.rays, GetFrameTime() * 10);
         }
         
         BeginDrawing();
             ClearBackground(BLACK);
 
             BeginMode2D(screenSpaceCamera);
-                drawRays(&directionalLight);
+                drawRays(coll.rays);
                 //mirror.draw();
                 circle.draw();
             EndMode2D();
 
             //DrawText(TextFormat("Light Position: %ix%i", (int)directionalLight.front().position.X, (int)directionalLight.front().position.Y), 10, 10, 20, DARKBLUE);
             //DrawText(TextFormat("Light next Position: %ix%i", (int)directionalLight.front().nextPosition.X, (int)directionalLight.front().nextPosition.Y), 10, 40, 20, DARKBLUE);
-            //DrawText(TextFormat("Step Counts: %i", lr.positions.size()), 10, 40, 20, DARKGREEN);
+            //DrawText(TextFormat("Ray Count: %i", coll.rays->size()), 10, 40, 20, DARKGREEN);
             DrawFPS(GetScreenWidth() - 95, 10);
         EndDrawing();
         //----------------------------------------------------------------------------------

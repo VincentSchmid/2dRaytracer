@@ -42,14 +42,14 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ALL_BUILD-Debug-f29980ef28818a67bdb4.json",
+					"jsonFile" : "target-ALL_BUILD-Debug-b38a190819fa27518a53.json",
 					"name" : "ALL_BUILD",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "RaylibInit::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-RaylibInit-Debug-2fc866a58e3f6e1159de.json",
+					"jsonFile" : "target-RaylibInit-Debug-28f5683e74447971a643.json",
 					"name" : "RaylibInit",
 					"projectIndex" : 0
 				},
@@ -103,14 +103,14 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ALL_BUILD-Release-f29980ef28818a67bdb4.json",
+					"jsonFile" : "target-ALL_BUILD-Release-b38a190819fa27518a53.json",
 					"name" : "ALL_BUILD",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "RaylibInit::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-RaylibInit-Release-71918e1d897dccb53f88.json",
+					"jsonFile" : "target-RaylibInit-Release-72192727576a92fe9d39.json",
 					"name" : "RaylibInit",
 					"projectIndex" : 0
 				},
@@ -164,14 +164,14 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ALL_BUILD-MinSizeRel-f29980ef28818a67bdb4.json",
+					"jsonFile" : "target-ALL_BUILD-MinSizeRel-b38a190819fa27518a53.json",
 					"name" : "ALL_BUILD",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "RaylibInit::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-RaylibInit-MinSizeRel-cc5089c73d37a5795e78.json",
+					"jsonFile" : "target-RaylibInit-MinSizeRel-501b35b97f09af56bbcf.json",
 					"name" : "RaylibInit",
 					"projectIndex" : 0
 				},
@@ -225,14 +225,14 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-f29980ef28818a67bdb4.json",
+					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-b38a190819fa27518a53.json",
 					"name" : "ALL_BUILD",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "RaylibInit::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-RaylibInit-RelWithDebInfo-6e41830a348b9c17d2f1.json",
+					"jsonFile" : "target-RaylibInit-RelWithDebInfo-ef3254cb916f7ef4e32e.json",
 					"name" : "RaylibInit",
 					"projectIndex" : 0
 				},

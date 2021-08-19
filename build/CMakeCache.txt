@@ -255,6 +255,9 @@ CVS_UPDATE_OPTIONS:STRING=-d -A -P
 //Maximum time allowed before CTest will kill the test.
 DART_TESTING_TIMEOUT:STRING=1500
 
+//The directory containing a CMake configuration file for Eigen3.
+Eigen3_DIR:PATH=C:/dev/vcpkg/installed/x64-windows/share/eigen3
+
 //Path to a program.
 GITCOMMAND:FILEPATH=C:/Program Files/Git/cmd/git.exe
 

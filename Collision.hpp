@@ -19,11 +19,16 @@
 
  #endif
 
+ #define CUTOFF 0.01f
+ #define IOR_AIR 1.0f
+
 
 class Collision
 {
-    private:
+    public:
         std::list<LightRay> *rays;
+
+    private:
         Shape *shape;
     
     public:
@@ -33,6 +38,10 @@ class Collision
         {};
 
         void check();
+
+    private:
+        int collide(LightRay *ray, Shape *shape);
+        LightRay* createNewRay(LightRay *ray);
 };
 
 void Collision::check()
@@ -42,7 +51,47 @@ void Collision::check()
     {
         if (shape->isColliding( &(*it) ))
         {
-            shape->collide(&(*it));
+            collide(&(*it), shape);         
         }
     }
+}
+
+int Collision::collide(LightRay *ray, Shape *shape)
+{
+    int numNewRays = 0;
+    MathX::Vector2 surfaceNormal = shape->getNormal(ray->position);
+
+    if (shape->surface->reflectivity > CUTOFF && ray->intensity > CUTOFF)
+    {
+        LightRay *reflectedRay = createNewRay(ray);
+        reflectedRay->intensity *= shape->surface->reflectivity;
+        numNewRays++;
+        reflect(reflectedRay, surfaceNormal);
+    }
+
+    if (shape->surface->transmission > CUTOFF && ray->intensity > CUTOFF)
+    {
+        LightRay *refractedRay = createNewRay(ray);
+        refractedRay->intensity *= shape->surface->transmission;
+        numNewRays++;
+        refract(refractedRay, surfaceNormal, shape->isInside(ray) ? IOR_AIR : shape->surface->refractionIndex);
+    }
+
+    if (shape->surface->diffuse > CUTOFF && ray->intensity > CUTOFF)
+    {
+        LightRay *scatteredRay = createNewRay(ray);
+        scatteredRay->intensity *= shape->surface->diffuse;
+        numNewRays++;
+        scatter(scatteredRay, surfaceNormal, shape->surface->color);
+    }
+
+    ray->direction = {0, 0};
+
+    return numNewRays;
+}
+
+LightRay* Collision::createNewRay(LightRay *ray)
+{
+    rays->push_front({ray->direction, ray->position, ray->refractionIndex, ray->intensity, ray->color});
+    return &(rays->front());
 }

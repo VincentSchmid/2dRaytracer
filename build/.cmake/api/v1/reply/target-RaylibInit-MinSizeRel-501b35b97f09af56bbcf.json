@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "Debug/RaylibInit.exe"
+			"path" : "MinSizeRel/RaylibInit.exe"
 		},
 		{
-			"path" : "Debug/RaylibInit.pdb"
+			"path" : "MinSizeRel/RaylibInit.pdb"
 		}
 	],
 	"backtrace" : 2,
@@ -50,7 +50,7 @@
 			{
 				"command" : 3,
 				"file" : 1,
-				"line" : 16,
+				"line" : 18,
 				"parent" : 0
 			},
 			{
@@ -67,7 +67,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1"
+					"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /O1 /Ob1 /DNDEBUG"
 				}
 			],
 			"includes" : 
@@ -79,6 +79,11 @@
 				{
 					"backtrace" : 5,
 					"path" : "C:/dev/MathX/mathLib"
+				},
+				{
+					"backtrace" : 4,
+					"isSystem" : true,
+					"path" : "C:/dev/vcpkg/installed/x64-windows/share/eigen3/../../include/eigen3"
 				}
 			],
 			"language" : "CXX",
@@ -100,11 +105,11 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1",
+				"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /O1 /Ob1 /DNDEBUG",
 				"role" : "flags"
 			},
 			{
-				"fragment" : "/machine:x64 -stdlib=libc++ -lc++abi /debug /INCREMENTAL /subsystem:console",
+				"fragment" : "/machine:x64 -stdlib=libc++ -lc++abi /INCREMENTAL:NO /subsystem:console",
 				"role" : "flags"
 			},
 			{

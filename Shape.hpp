@@ -12,29 +12,50 @@
 
 #endif
 
+
 struct Surface
 {
+    Surface(float reflectivity, float transmission, float diffuse, float refractionIndex, MathX::Color color)
+    : refractionIndex(refractionIndex)
+    , color(color)
+    , reflectivity(reflectivity)
+    , transmission(transmission)
+    , diffuse(diffuse)
+    {
+        MathX::Vector3 surfaceVector{reflectivity, transmission, diffuse};
+        surfaceVector.Normalize();
+
+        this->reflectivity = surfaceVector.X;
+        this->transmission = surfaceVector.Y;
+        this->diffuse = surfaceVector.Z;
+    };
+
     float reflectivity;
     float transmission;
-    MathX::Color color;
+    float diffuse;
     float refractionIndex;
+    MathX::Color color;
 };
 
 
 class Shape
 {
+    public:
+        Surface *surface;
+
     protected:
-        Surface surface;
         MathX::Vector2 position;
         float size;
 
     public:
-        Shape(MathX::Vector2 position, float size) 
+        Shape(MathX::Vector2 position, float size, Surface *surface) 
         : position(position)
         , size(size)
+        , surface(surface)
         {};
 
         virtual void draw() = 0;
-        virtual void collide(LightRay *ray) = 0;
         virtual bool isColliding(LightRay *ray) = 0;
+        virtual bool isInside(LightRay *ray) = 0;
+        virtual MathX::Vector2 getNormal(MathX::Vector2 rayPosition) = 0;
 };

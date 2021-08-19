@@ -25,4 +25,7 @@ C:/dev/raylibInit/build/CMakeFiles/3.19.4/CMakeCCompiler.cmake
 C:/dev/raylibInit/build/CMakeFiles/3.19.4/CMakeCXXCompiler.cmake
 C:/dev/raylibInit/build/CMakeFiles/3.19.4/CMakeRCCompiler.cmake
 C:/dev/raylibInit/build/CMakeFiles/3.19.4/CMakeSystem.cmake
+C:/dev/vcpkg/installed/x64-windows/share/eigen3/Eigen3Config.cmake
+C:/dev/vcpkg/installed/x64-windows/share/eigen3/Eigen3ConfigVersion.cmake
+C:/dev/vcpkg/installed/x64-windows/share/eigen3/Eigen3Targets.cmake
 C:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake
