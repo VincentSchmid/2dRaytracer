@@ -8,19 +8,18 @@
 #ifndef Ray_h
 #define Ray_h
 
-#include "Ray.h"
+#include "Ray.hpp"
 
 #endif
 
 
 struct Surface
 {
-    Surface(float reflectivity, float transmission, float diffuse, float refractionIndex, MathX::Color color)
-    : refractionIndex(refractionIndex)
-    , color(color)
-    , reflectivity(reflectivity)
+    Surface(float reflectivity, float transmission, float diffuse, float (*dispersionFunction)(float))
+    : reflectivity(reflectivity)
     , transmission(transmission)
     , diffuse(diffuse)
+    , dispersionFunction(dispersionFunction)
     {
         MathX::Vector3 surfaceVector{reflectivity, transmission, diffuse};
         surfaceVector.Normalize();
@@ -33,8 +32,7 @@ struct Surface
     float reflectivity;
     float transmission;
     float diffuse;
-    float refractionIndex;
-    MathX::Color color;
+    float (*dispersionFunction)(float); // Cauchy's equation (Wavelength in micro meters)
 };
 
 

@@ -87,7 +87,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\raylibInit\include;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -104,10 +104,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\raylibInit\include;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\raylibInit\include;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -128,7 +128,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </PostBuildEvent>
     <Link>
       <AdditionalDependencies>raylib.lib;mathLib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:/dev/vcpkg/installed/x64-windows/lib;C:/dev/vcpkg/installed/x64-windows/lib/$(Configuration);C:/dev/MathX/x64/Debug;C:/dev/MathX/x64/Debug/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:/dev/vcpkg/installed/x64-windows/lib;C:/dev/vcpkg/installed/x64-windows/lib/$(Configuration);C:/dev/MathX/x64/$(Configuration);C:/dev/MathX/x64/$(Configuration)/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64 -stdlib=libc++ -lc++abi</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -142,7 +142,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\raylibInit\include;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
@@ -159,10 +159,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\raylibInit\include;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\raylibInit\include;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -183,7 +183,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </PostBuildEvent>
     <Link>
       <AdditionalDependencies>raylib.lib;mathLib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:/dev/vcpkg/installed/x64-windows/lib;C:/dev/vcpkg/installed/x64-windows/lib/$(Configuration);C:/dev/MathX/x64/Debug;C:/dev/MathX/x64/Debug/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:/dev/vcpkg/installed/x64-windows/lib;C:/dev/vcpkg/installed/x64-windows/lib/$(Configuration);C:/dev/MathX/x64/$(Configuration);C:/dev/MathX/x64/$(Configuration)/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64 -stdlib=libc++ -lc++abi</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -197,7 +197,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\raylibInit\include;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
@@ -214,10 +214,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\raylibInit\include;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\raylibInit\include;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -238,7 +238,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </PostBuildEvent>
     <Link>
       <AdditionalDependencies>raylib.lib;mathLib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:/dev/vcpkg/installed/x64-windows/lib;C:/dev/vcpkg/installed/x64-windows/lib/$(Configuration);C:/dev/MathX/x64/Debug;C:/dev/MathX/x64/Debug/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:/dev/vcpkg/installed/x64-windows/lib;C:/dev/vcpkg/installed/x64-windows/lib/$(Configuration);C:/dev/MathX/x64/$(Configuration);C:/dev/MathX/x64/$(Configuration)/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64 -stdlib=libc++ -lc++abi</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -252,7 +252,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\raylibInit\include;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -268,10 +268,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\raylibInit\include;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>c:\dev\vcpkg\installed\x64-windows\include;C:\dev\MathX\mathLib;C:\dev\raylibInit\include;C:\dev\vcpkg\installed\x64-windows\share\eigen3\..\..\include\eigen3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -292,7 +292,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </PostBuildEvent>
     <Link>
       <AdditionalDependencies>raylib.lib;mathLib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:/dev/vcpkg/installed/x64-windows/lib;C:/dev/vcpkg/installed/x64-windows/lib/$(Configuration);C:/dev/MathX/x64/Debug;C:/dev/MathX/x64/Debug/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:/dev/vcpkg/installed/x64-windows/lib;C:/dev/vcpkg/installed/x64-windows/lib/$(Configuration);C:/dev/MathX/x64/$(Configuration);C:/dev/MathX/x64/$(Configuration)/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64 -stdlib=libc++ -lc++abi</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>

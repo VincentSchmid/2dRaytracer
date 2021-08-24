@@ -12,13 +12,6 @@
 
 #endif
 
-#ifndef Mirror_h
-#define Mirror_h
-
-#include "Mirror.hpp"
-
-#endif
-
 #ifndef Collision_h
 #define Collision_h
 
@@ -32,6 +25,15 @@
 #include "Circle.hpp"
 
 #endif
+
+#ifndef Triangle_h
+#define Triangle_h
+
+#include "Triangle.hpp"
+
+#endif
+
+#include <math.h>
 
 #define SCREEN_HEIGHT 900
 
@@ -59,18 +61,33 @@ int main(void)
     float cameraX = 0.0f;
     float cameraY = 0.0f;
 
-    struct Surface glass = {0.0f, 1.0f, 0.0f, 1.43f, toMathXColor(Blue)};
+    struct Surface glass = {0.0f, 1.0f, 0.0f, 
+        [](float wavelength_um) -> float
+        { 
+            // function from here https://refractiveindex.info/?shelf=3d&book=glass&page=soda-lime-clear
+            return 1.5130f - 0.003169f * pow(wavelength_um, 2.0f) + 0.003962f * pow(wavelength_um, -2.0f);
+        }
+    };
 
-    Mirror mirror = Mirror({300, 225}, {.70f, .60f}, 200.0f);
-    Circle circle = Circle({800, 415}, 400, &glass);
+    struct Surface crazyGlass = {0.0f, 1.0f, 0.0f, 
+        [](float wavelength_um) -> float
+        { 
+            // not realistic properties
+            return 1.5130f - 0.006069f * pow(wavelength_um, 2.0f) + 0.008062f * pow(wavelength_um, -2.0f);
+        }
+    };
 
-    std::list<LightRay> directionalLight =  getDirectionalLightRays( {100, 450}, 400, {1, 0}, 101, 1);
+    Circle circle = Circle({800, 415}, 200, &glass);
+    Triangle triangle = Triangle({800, 415}, 200, &crazyGlass);
 
-    Collision coll = Collision(&directionalLight, &circle);
+    std::list<LightRay> directionalLight =  getDirectionalLightRays( {100, 250}, 2, {.9, .40}, 101, 1.0f);
+
+    Collision coll = Collision(&directionalLight, &triangle);
     
 
     SetTargetFPS(60);
     int i = 0;
+    bool go = false;
     //--------------------------------------------------------------------------------------
 
     // Main game loop6
@@ -79,14 +96,19 @@ int main(void)
 
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
-            std::cout << coll.rays->front().positions.size() << std::endl;
+            go = true;
+            //std::cout << coll.rays->front().positions.size() << std::endl;
         }
 
-        for (size_t i = 0; i < 100; i++)
+        if (go)
         {
-            coll.check();
-            step(coll.rays, GetFrameTime() * 10);
+            for (size_t i = 0; i < 100; i++)
+            {
+                coll.check();
+                step(coll.rays, GetFrameTime() * 10);
+            }
         }
+
         
         BeginDrawing();
             ClearBackground(BLACK);
@@ -94,7 +116,7 @@ int main(void)
             BeginMode2D(screenSpaceCamera);
                 drawRays(coll.rays);
                 //mirror.draw();
-                circle.draw();
+                triangle.draw();
             EndMode2D();
 
             //DrawText(TextFormat("Light Position: %ix%i", (int)directionalLight.front().position.X, (int)directionalLight.front().position.Y), 10, 10, 20, DARKBLUE);

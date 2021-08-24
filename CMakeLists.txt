@@ -4,11 +4,12 @@ project(RaylibInit VERSION 0.1.0)
 INCLUDE_DIRECTORIES(
     c:/dev/vcpkg/installed/x64-windows/include
     C:/dev/MathX/mathLib
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 LINK_DIRECTORIES(
     C:/dev/vcpkg/installed/x64-windows/lib
-    C:/dev/MathX/x64/Debug
+    C:/dev/MathX/x64/$(Configuration)
 )
 
 add_executable(RaylibInit main.cpp)

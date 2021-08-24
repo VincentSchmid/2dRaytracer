@@ -69,14 +69,7 @@ int Collision::collide(LightRay *ray, Shape *shape)
         reflect(reflectedRay, surfaceNormal);
     }
 
-    if (shape->surface->transmission > CUTOFF && ray->intensity > CUTOFF)
-    {
-        LightRay *refractedRay = createNewRay(ray);
-        refractedRay->intensity *= shape->surface->transmission;
-        numNewRays++;
-        refract(refractedRay, surfaceNormal, shape->isInside(ray) ? IOR_AIR : shape->surface->refractionIndex);
-    }
-
+    /*
     if (shape->surface->diffuse > CUTOFF && ray->intensity > CUTOFF)
     {
         LightRay *scatteredRay = createNewRay(ray);
@@ -84,14 +77,23 @@ int Collision::collide(LightRay *ray, Shape *shape)
         numNewRays++;
         scatter(scatteredRay, surfaceNormal, shape->surface->color);
     }
+    */
 
-    ray->direction = {0, 0};
+    if (shape->surface->transmission > CUTOFF && ray->intensity > CUTOFF)
+    {
+        ray->intensity *= shape->surface->transmission;
+        float refractionIndex = (shape->surface->dispersionFunction)(ray->wave_length_nm / 1000.0f);
+        //PrintValue(refractionIndex, "Index of Refraction");
+        refract(ray, surfaceNormal, shape->isInside(ray) ? IOR_AIR : refractionIndex);
+    }
+
+    //ray->direction = {0, 0};
 
     return numNewRays;
 }
 
 LightRay* Collision::createNewRay(LightRay *ray)
 {
-    rays->push_front({ray->direction, ray->position, ray->refractionIndex, ray->intensity, ray->color});
+    rays->push_front({ray->direction, ray->position, ray->refractionIndex, ray->intensity, ray->wave_length_nm});
     return &(rays->front());
 }

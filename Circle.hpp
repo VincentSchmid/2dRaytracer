@@ -5,12 +5,6 @@
 
 #endif
 
-#ifndef rlgl_h
-#define rlgl_h
-
-#include "rlgl.h"
-
-#endif
 
 #ifndef helpers_h
 #define helpers_h
@@ -38,7 +32,7 @@ class Circle : public Shape
 
 void Circle::draw()
 {
-    DrawCircleCorrected(position.X, position.Y, size, toRayLibColor(surface->color));
+    DrawCircleCorrected(position.X, position.Y, size, BLUE);
 }
 
 MathX::Vector2 Circle::getNormal(MathX::Vector2 rayPosition)
