@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(RaylibInit VERSION 0.1.0)
+project(2dRayTracer VERSION 0.1.0)
 
 INCLUDE_DIRECTORIES(
     c:/dev/vcpkg/installed/x64-windows/include
@@ -12,12 +12,10 @@ LINK_DIRECTORIES(
     C:/dev/MathX/x64/$(Configuration)
 )
 
-add_executable(RaylibInit main.cpp)
+add_executable(2dRayTracer main.cpp)
 
-find_package(Eigen3 CONFIG REQUIRED)
-
-TARGET_LINK_LIBRARIES(RaylibInit
-    raylib mathLib Eigen3::Eigen
+TARGET_LINK_LIBRARIES(2dRayTracer
+    raylib mathLib
 )
 
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi")

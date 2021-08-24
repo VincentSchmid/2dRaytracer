@@ -1,4 +1,0 @@
-C:/dev/raylibInit/build/CMakeFiles/RaylibInit.dir
-C:/dev/raylibInit/build/CMakeFiles/PACKAGE.dir
-C:/dev/raylibInit/build/CMakeFiles/ALL_BUILD.dir
-C:/dev/raylibInit/build/CMakeFiles/ZERO_CHECK.dir
