@@ -50,7 +50,6 @@ int main(void)
     
 
     SetTargetFPS(60);
-    int i = 0;
     bool go = false;
     //--------------------------------------------------------------------------------------
 
@@ -79,9 +78,13 @@ int main(void)
 
             BeginMode2D(screenSpaceCamera);
                 drawRays(coll.rays);
-                //mirror.draw();
-                circle.draw();
-                triangle.draw();
+                
+                std::list<Shape*>::iterator it;
+
+                for (it = shapesInScene.begin(); it != shapesInScene.end(); ++it)
+                {
+                    (*it)->draw();
+                }
                 
             EndMode2D();
 
