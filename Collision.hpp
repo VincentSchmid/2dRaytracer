@@ -17,12 +17,12 @@ class Collision
         std::list<LightRay> *rays;
 
     private:
-        Shape *shape;
+        std::list<Shape*> shapes;
     
     public:
-        Collision(std::list<LightRay> *rays, Shape *shape)
+        Collision(std::list<LightRay> *rays, std::list<Shape*> shapes)
         : rays(rays)
-        , shape(shape)
+        , shapes(shapes)
         {};
 
         void check();
@@ -35,11 +35,16 @@ class Collision
 void Collision::check()
 {
     std::list<LightRay>::iterator it;
+    std::list<Shape*>::iterator itShape;
+
     for (it = rays->begin(); it != rays->end(); ++it)
     {
-        if (shape->isColliding( &(*it) ))
+        for (itShape = shapes.begin(); itShape != shapes.end(); ++itShape)
         {
-            collide(&(*it), shape);         
+            if ((*itShape)->isColliding( &(*it) ))
+            {
+                collide(&(*it), (*itShape));         
+            }
         }
     }
 }

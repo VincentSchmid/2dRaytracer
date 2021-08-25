@@ -12,6 +12,7 @@
 #include "Surface.hpp"
 
 #include <math.h>
+#include <array>
 
 #define SCREEN_HEIGHT 900
 
@@ -30,37 +31,22 @@ int main(void)
 
     InitWindow(screenWidth, screenHeight, "Light Ray Simulation");
 
-    Camera2D worldSpaceCamera = { 0 };  // Game world camera
-    worldSpaceCamera.zoom = 1.0f;
-
     Camera2D screenSpaceCamera = { 0 }; // Smoothing camera
     screenSpaceCamera.zoom = 1.0f;
 
     float cameraX = 0.0f;
     float cameraY = 0.0f;
 
-    struct Surface glass = {0.0f, 1.0f, 0.0f, 
-        [](float wavelength_um) -> float
-        { 
-            // function from here https://refractiveindex.info/?shelf=3d&book=glass&page=soda-lime-clear
-            return 1.5130f - 0.003169f * pow(wavelength_um, 2.0f) + 0.003962f * pow(wavelength_um, -2.0f);
-        }
-    };
+    Triangle triangle = Triangle({800, 415}, 200, &GLASS);
+    Circle circle = Circle({1200, 415}, 100, &GLASS);
 
-    struct Surface crazyGlass = {0.0f, 1.0f, 0.0f, 
-        [](float wavelength_um) -> float
-        { 
-            // not realistic properties
-            return 1.5130f - 0.006069f * pow(wavelength_um, 2.0f) + 0.008062f * pow(wavelength_um, -2.0f);
-        }
-    };
+    std::list<Shape*> shapesInScene = {};
+    shapesInScene.push_back(&circle);
+    shapesInScene.push_back(&triangle);
 
-    Circle circle = Circle({800, 415}, 200, &glass);
-    Triangle triangle = Triangle({800, 415}, 200, &crazyGlass);
+    std::list<LightRay> directionalLight =  getDirectionalLightRays( {100, 250}, 2, {.9, .40}, 21, 1.0f);
 
-    std::list<LightRay> directionalLight =  getDirectionalLightRays( {100, 250}, 2, {.9, .40}, 101, 1.0f);
-
-    Collision coll = Collision(&directionalLight, &triangle);
+    Collision coll = Collision(&directionalLight, shapesInScene);
     
 
     SetTargetFPS(60);
@@ -80,10 +66,10 @@ int main(void)
 
         if (go)
         {
-            for (size_t i = 0; i < 100; i++)
+            for (size_t i = 0; i < 500; i++)
             {
                 coll.check();
-                step(coll.rays, GetFrameTime() * 10);
+                step(coll.rays, GetFrameTime() * 2);
             }
         }
 
@@ -94,7 +80,9 @@ int main(void)
             BeginMode2D(screenSpaceCamera);
                 drawRays(coll.rays);
                 //mirror.draw();
+                circle.draw();
                 triangle.draw();
+                
             EndMode2D();
 
             //DrawText(TextFormat("Light Position: %ix%i", (int)directionalLight.front().position.X, (int)directionalLight.front().position.Y), 10, 10, 20, DARKBLUE);
