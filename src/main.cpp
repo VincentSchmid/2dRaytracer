@@ -38,7 +38,7 @@ int main(void)
     float cameraY = 0.0f;
 
     Triangle triangle = Triangle({800, 415}, 200, &CRAZY_GLASS);
-    Circle circle = Circle({1200, 415}, 100, &CRAZY_GLASS);
+    Circle circle = Circle({1200, 355}, 100, &CRAZY_GLASS);
 
     std::list<Shape*> shapesInScene = {};
     shapesInScene.push_back(&circle);
