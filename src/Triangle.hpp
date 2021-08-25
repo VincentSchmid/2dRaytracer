@@ -49,7 +49,7 @@ void Triangle::draw()
 {
     /*
     //normals
-    std::function<void(MathX::Vector2, MathX::Vector2, float, Color)> drawNormal = [this](MathX::Vector2 p1, MathX::Vector2 p2, float normalLength, Color color) {
+    auto drawNormal = [this](MathX::Vector2 p1, MathX::Vector2 p2, float normalLength, Color color) {
         MathX::Vector2 tmp = p1 + ((p2 - p1) / 2);
         MathX::Vector2 tmpNrml = getNormal(tmp) * normalLength + tmp;
         DrawLineCorrected(tmp.X, tmp.Y, tmpNrml.X, tmpNrml.Y, color);
