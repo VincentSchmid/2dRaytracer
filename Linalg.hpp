@@ -1,9 +1,7 @@
-#ifndef MathX_h
-#define MathX_h
+#ifndef Linalg_h
+#define Linalg_h
 
 #include "MathX.h"
-
-#endif
 
 
 bool isLineBetweenTwoPoints(MathX::Vector2 lineP1, MathX::Vector2 lineP2, MathX::Vector2 p1, MathX::Vector2 p2)
@@ -34,3 +32,5 @@ float distanceToLine(MathX::Vector2 point, MathX::Vector2 lineP1, MathX::Vector2
 
     return point.Distance(intesect_pnt);
 }
+
+#endif

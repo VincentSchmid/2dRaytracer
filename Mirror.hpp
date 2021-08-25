@@ -1,25 +1,12 @@
-#ifndef MathX_h
-#define MathX_h
+#ifndef Mirror_h
+#define Mirror_h
 
 #include "MathX.h"
-
-#endif
-
-#ifndef rlgl_h
-#define rlgl_h
-
 #include "rlgl.h"
-
-#endif
+#include "helpers.hpp"
 
 #include <iostream>
 
-#ifndef helpers_h
-#define helpers_h
-
-#include "helpers.hpp"
-
-#endif
 
 class Mirror
 {
@@ -95,3 +82,5 @@ bool Mirror::isPointingAtMirror(MathX::Vector2 position, MathX::Vector2 directio
 
     return A.Cross(direction) * A.Cross(C) >= 0 && C.Cross(direction) * C.Cross(A) >= 0;
 }
+
+#endif

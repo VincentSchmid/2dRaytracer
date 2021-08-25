@@ -1,27 +1,11 @@
-#ifndef MathX_h
-#define MathX_h
+#ifndef helpers_h
+#define helpers_h
 
 #include "MathX.h"
-
-#endif
-
-#ifndef raylib_h
-#define raylib_h
-
-#include "raylib.h"
-
-#endif
+#include "wavelength_rgb.hpp"
 
 #include <iostream>
 #include <string>
-
-#ifndef wavelength_rgb_h
-#define wavelength_rgb_h
-
-#include "wavelength_rgb.hpp"
-
-#endif
-
 
 #define SCREEN_HEIGHT 900
 
@@ -91,3 +75,5 @@ MathX::Color toMathXColor(Color color)
 {
     return MathX::Color{color.r, color.g, color.b, color.a};
 }
+
+#endif

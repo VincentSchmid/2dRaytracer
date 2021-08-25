@@ -17,9 +17,3 @@ add_executable(2dRayTracer main.cpp)
 TARGET_LINK_LIBRARIES(2dRayTracer
     raylib mathLib
 )
-
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi")
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-
-include(CPack)

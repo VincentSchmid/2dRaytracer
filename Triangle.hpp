@@ -1,37 +1,11 @@
-#ifndef Shape_h
-#define Shape_h
+#ifndef Triangle_h
+#define Triangle_h
 
 #include "Shape.hpp"
-
-#endif
-
-#ifndef raylib_h
-#define raylib_h
-
 #include "raylib.h"
-
-#endif
-
-#ifndef helpers_h
-#define helpers_h
-
 #include "helpers.hpp"
-
-#endif
-
-#ifndef MathX_h
-#define MathX_h
-
 #include "MathX.h"
-
-#endif
-
-#ifndef Linalg_h
-#define Linalg_h
-
 #include "Linalg.hpp"
-
-#endif
 
 #include <math.h>
 #include <functional>
@@ -73,7 +47,7 @@ class Triangle : public Shape
 
 void Triangle::draw()
 {
-    
+    /*
     //normals
     std::function<void(MathX::Vector2, MathX::Vector2, float, Color)> drawNormal = [this](MathX::Vector2 p1, MathX::Vector2 p2, float normalLength, Color color) {
         MathX::Vector2 tmp = p1 + ((p2 - p1) / 2);
@@ -81,7 +55,6 @@ void Triangle::draw()
         DrawLineCorrected(tmp.X, tmp.Y, tmpNrml.X, tmpNrml.Y, color);
     };
 
-    /*
     drawNormal(v1, v2, 100.0f, RED);
     drawNormal(v1, v3, 100.0f, RED);
     drawNormal(v2, v3, 100.0f, RED);
@@ -103,19 +76,16 @@ MathX::Vector2 Triangle::getNormal(MathX::Vector2 rayPosition)
 
     if (dmin == d1)
     {
-        //Print("d1");
         normal = v1 - v2;
     }
 
     else if (dmin == d2)
     {
-        //Print("d2");
         normal = v3 - v1;
     }
 
     else if (dmin == d3)
     {
-        //Print("d3");
         normal = v2 - v3;
     }
     normal = normal.PerpendicularCounterClockwise();
@@ -163,3 +133,5 @@ bool Triangle::pointIsInTriangle(MathX::Vector2 pt)
 
     return !(has_neg && has_pos);
 }
+
+#endif

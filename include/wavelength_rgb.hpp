@@ -17,6 +17,8 @@
  *                                                                           *
  *****************************************************************************
 */
+#ifndef WAVELENGTH_RGB_h
+#define WAVELENGTH_RGB_h
 
 #include <cmath>
 
@@ -101,3 +103,5 @@ rgb convert_wave_length_nm_to_rgb(const double wave_length_nm)
 
    return result;
 }
+
+#endif

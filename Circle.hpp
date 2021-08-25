@@ -1,17 +1,8 @@
-#ifndef Shape_h
-#define Shape_h
+#ifndef Circle_h
+#define Circle_h
 
 #include "Shape.hpp"
-
-#endif
-
-
-#ifndef helpers_h
-#define helpers_h
-
 #include "helpers.hpp"
-
-#endif
 
 
 class Circle : public Shape
@@ -62,3 +53,5 @@ bool Circle::isColliding(LightRay *ray)
 {
     return collisionEnter(ray) || collisionExit(ray);
 }
+
+#endif

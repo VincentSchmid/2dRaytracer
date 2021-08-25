@@ -1,32 +1,13 @@
-#ifndef MathX_h
-#define MathX_h
+#ifndef Ray_h
+#define Ray_h
 
 #include "MathX.h"
-
-#endif
-
-#ifndef list_h
-#define list_h
+#include "helpers.hpp"
+#include "wavelength_rgb.hpp"
 
 #include <list>
 
-#endif
-
-#ifndef helpers_h
-#define helpers_h
-
-#include "helpers.hpp"
-
-#endif
-
-#ifndef wavelength_rgb_h
-#define wavelength_rgb_h
-
-#include "wavelength_rgb.hpp"
-
-#endif
-
-#define BUNDLE_SIZE 80
+#define BUNDLE_SIZE 30
 
 
 struct LightRay 
@@ -187,3 +168,5 @@ void scatter(LightRay *ray, MathX::Vector2 normal, MathX::Color surfaceColor)
     ray->prevDirection = ray->direction;
     ray->direction.Zero();
 }
+
+#endif

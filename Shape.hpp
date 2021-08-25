@@ -1,39 +1,9 @@
-#ifndef MathX_h
-#define MathX_h
+#ifndef Shape_h
+#define Shape_h
 
 #include "MathX.h"
-
-#endif
-
-#ifndef Ray_h
-#define Ray_h
-
 #include "Ray.hpp"
-
-#endif
-
-
-struct Surface
-{
-    Surface(float reflectivity, float transmission, float diffuse, float (*dispersionFunction)(float))
-    : reflectivity(reflectivity)
-    , transmission(transmission)
-    , diffuse(diffuse)
-    , dispersionFunction(dispersionFunction)
-    {
-        MathX::Vector3 surfaceVector{reflectivity, transmission, diffuse};
-        surfaceVector.Normalize();
-
-        this->reflectivity = surfaceVector.X;
-        this->transmission = surfaceVector.Y;
-        this->diffuse = surfaceVector.Z;
-    };
-
-    float reflectivity;
-    float transmission;
-    float diffuse;
-    float (*dispersionFunction)(float); // Cauchy's equation (Wavelength in micro meters)
-};
+#include "Surface.hpp"
 
 
 class Shape
@@ -57,3 +27,5 @@ class Shape
         virtual bool isInside(LightRay *ray) = 0;
         virtual MathX::Vector2 getNormal(MathX::Vector2 rayPosition) = 0;
 };
+
+#endif

@@ -1,23 +1,11 @@
-#ifndef Ray_h
-#define Ray_h
+#ifndef Collision_h
+#define Collision_h
 
-#include "Ray.h"
-
-#endif
-
-#ifndef MathX_h
-#define MathX_h
+#include "Ray.hpp"
+#include "Shape.hpp"
 
 #include "MathX.h"
 
-#endif
-
-#ifndef Shape_h
-#define Shape_h
-
-#include "Shape.hpp"
-
- #endif
 
  #define CUTOFF 0.01f
  #define IOR_AIR 1.0f
@@ -97,3 +85,5 @@ LightRay* Collision::createNewRay(LightRay *ray)
     rays->push_front({ray->direction, ray->position, ray->refractionIndex, ray->intensity, ray->wave_length_nm});
     return &(rays->front());
 }
+
+#endif

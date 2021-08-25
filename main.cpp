@@ -5,33 +5,11 @@
 
 #endif
 
-#ifndef Ray_h
-#define Ray_h
-
 #include "Ray.hpp"
-
-#endif
-
-#ifndef Collision_h
-#define Collision_h
-
 #include "Collision.hpp"
-
-#endif
-
-#ifndef Circle_h
-#define Circle_h
-
 #include "Circle.hpp"
-
-#endif
-
-#ifndef Triangle_h
-#define Triangle_h
-
 #include "Triangle.hpp"
-
-#endif
+#include "Surface.hpp"
 
 #include <math.h>
 
