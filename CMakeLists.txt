@@ -12,7 +12,7 @@ LINK_DIRECTORIES(
     C:/dev/MathX/x64/$(Configuration)
 )
 
-add_executable(2dRayTracer main.cpp)
+add_executable(2dRayTracer src/main.cpp)
 
 TARGET_LINK_LIBRARIES(2dRayTracer
     raylib mathLib
