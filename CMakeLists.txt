@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(2dRayTracer VERSION 0.1.0)
 
+find_package(OpenMP REQUIRED)
+
 INCLUDE_DIRECTORIES(
     c:/dev/vcpkg/installed/x64-windows/include
     C:/dev/MathX/mathLib

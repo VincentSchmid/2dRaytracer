@@ -13,6 +13,7 @@
 
 #include <math.h>
 #include <array>
+#include <vector>
 
 #define SCREEN_HEIGHT 900
 
@@ -37,16 +38,16 @@ int main(void)
     float cameraX = 0.0f;
     float cameraY = 0.0f;
 
-    Triangle triangle = Triangle({800, 415}, 200, &CRAZY_GLASS);
-    Circle circle = Circle({1200, 355}, 100, &CRAZY_GLASS);
+    Triangle triangle = Triangle({800, 415}, 200, &GLASS);
+    Circle circle = Circle({1200, 355}, 100, &GLASS);
 
     std::list<Shape*> shapesInScene = {};
-    shapesInScene.push_back(&circle);
+    //shapesInScene.push_back(&circle);
     shapesInScene.push_back(&triangle);
 
-    std::list<LightRay> directionalLight =  getDirectionalLightRays( {100, 250}, 2, {.9, .40}, 21, 1.0f);
+    std::vector<LightRay> directionalLight =  getDirectionalLightRays( {100, 250}, 2, {.9, .40}, 51, 1.0f);
 
-    Collision coll = Collision(&directionalLight, shapesInScene);
+    Collision coll = Collision(directionalLight, shapesInScene);
     
 
     SetTargetFPS(60);
@@ -65,14 +66,13 @@ int main(void)
 
         if (go)
         {
-            for (size_t i = 0; i < 500; i++)
+            for (size_t i = 0; i < 1000; i++)
             {
                 coll.check();
-                step(coll.rays, GetFrameTime() * 2);
+                step(coll.rays, GetFrameTime() * 1.0f);
             }
         }
 
-        
         BeginDrawing();
             ClearBackground(BLACK);
 

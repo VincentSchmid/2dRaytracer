@@ -6,21 +6,24 @@
 
 #include "MathX.h"
 
+#include <vector>
 
- #define CUTOFF 0.01f
- #define IOR_AIR 1.0f
+#define CUTOFF 0.01f
+#define IOR_AIR 1.0f
 
 
 class Collision
 {
     public:
-        std::list<LightRay> *rays;
+        std::vector<LightRay> rays;
 
     private:
         std::list<Shape*> shapes;
+
+        int debugVal;
     
     public:
-        Collision(std::list<LightRay> *rays, std::list<Shape*> shapes)
+        Collision(std::vector<LightRay> rays, std::list<Shape*> shapes)
         : rays(rays)
         , shapes(shapes)
         {};
@@ -34,19 +37,26 @@ class Collision
 
 void Collision::check()
 {
-    std::list<LightRay>::iterator it;
+    std::vector<LightRay>::size_type oldSize = rays.size();
     std::list<Shape*>::iterator itShape;
 
-    for (it = rays->begin(); it != rays->end(); ++it)
-    {
-        for (itShape = shapes.begin(); itShape != shapes.end(); ++itShape)
+    //#pragma omp parallel
+    //#pragma omp single
+    //{
+        for (auto i = 0; i < oldSize; i++)
         {
-            if ((*itShape)->isColliding( &(*it) ))
+            for (itShape = shapes.begin(); itShape != shapes.end(); ++itShape)
             {
-                collide(&(*it), (*itShape));         
+                if ((*itShape)->isColliding( &rays[i] ))
+                {
+                    debugVal = i;
+                    //#pragma omp task firstprivate(it)
+                    collide(&rays[i], (*itShape));
+                }
             }
         }
-    }
+    //#pragma omp taskwait
+    //}
 }
 
 int Collision::collide(LightRay *ray, Shape *shape)
@@ -88,8 +98,8 @@ int Collision::collide(LightRay *ray, Shape *shape)
 
 LightRay* Collision::createNewRay(LightRay *ray)
 {
-    rays->push_front({ray->direction, ray->position, ray->refractionIndex, ray->intensity, ray->wave_length_nm});
-    return &(rays->front());
+    rays.push_back({ray->direction, ray->position, ray->refractionIndex, ray->intensity, ray->wave_length_nm});
+    return &rays.back();
 }
 
 #endif

@@ -6,6 +6,7 @@
 #include "wavelength_rgb.hpp"
 
 #include <list>
+#include <vector>
 
 #define BUNDLE_SIZE 30
 
@@ -35,72 +36,70 @@ struct LightRay
     std::list<MathX::Vector2> positions;
 };
     
-void step(LightRay *ray, float deltaTime)
+void step(LightRay &ray, float deltaTime)
 {
-    MathX::Vector2 delta_pos = ray->direction * (deltaTime / ray->refractionIndex);
-    ray->position += delta_pos;
-    if (ray->prevDirection != ray->direction)
+    MathX::Vector2 delta_pos = ray.direction * (deltaTime / ray.refractionIndex);
+    ray.position += delta_pos;
+    if (ray.prevDirection != ray.direction)
     {
-        ray->prevDirection = ray->direction;
-        ray->positions.push_back(ray->position);
+        ray.prevDirection = ray.direction;
+        ray.positions.push_back(ray.position);
     } else
     {
-        ray->positions.pop_back();
-        ray->positions.push_back(ray->position);
+        ray.positions.pop_back();
+        ray.positions.push_back(ray.position);
     }
-    ray->nextPosition = ray->position + delta_pos;
+    ray.nextPosition = ray.position + delta_pos;
 }
 
-void step(std::list<LightRay> *rays, float deltaTime)
+void step(std::vector<LightRay> &rays, float deltaTime)
 {
-    std::list<LightRay>::iterator it;
-
-    for (it = rays->begin(); it != rays->end(); ++it)
+    for (auto i = 0; i < rays.size(); i++)
     {
-        step(&(*it), deltaTime);
+        step(rays[i], deltaTime);
     }
 }
 
-void drawRay(LightRay *ray)
+void drawRay(LightRay &ray)
 {
-    MathX::Vector2 prevPos = ray->positions.front();
+    MathX::Vector2 prevPos = ray.positions.front();
 
-    std::list<MathX::Vector2>::iterator it;
-
-    for (it = std::next(ray->positions.begin()); it != ray->positions.end(); ++it)
+    for(MathX::Vector2 pos : ray.positions)
     {
-        DrawLineCorrected(prevPos.X, prevPos.Y, it->X, it->Y, waveLengthtoRayLibColor(ray->wave_length_nm, ray->intensity * 255.0f));
-        prevPos = {it->X, it->Y};
+        DrawLineCorrected(prevPos.X, prevPos.Y, pos.X, pos.Y, waveLengthtoRayLibColor(ray.wave_length_nm, ray.intensity * 255.0f));
+        prevPos = {pos.X, pos.Y};
     }
 }
 
-void drawRays(std::list<LightRay> *rays)
+void drawRays(std::vector<LightRay> &rays)
 {
-    std::list<LightRay>::iterator it;
+    std::vector<LightRay>::size_type oldSize = rays.size();
 
-    for (it = rays->begin(); it != rays->end(); ++it)
+    for (auto i = 0; i < oldSize; i++)
     {
-        drawRay(&(*it));
+        drawRay(rays[i]);
     }
 }
 
-std::list<LightRay> createRayBundle(MathX::Vector2 direction, MathX::Vector2 position, float refractiveIndex, float intensity)
+std::vector<LightRay> createRayBundle(MathX::Vector2 direction, MathX::Vector2 position, float refractiveIndex, float intensity)
 {
-    std::list<LightRay> lightRays = {};
+    std::vector<LightRay> lightRays = {};
+    lightRays.reserve(BUNDLE_SIZE);
 
     for (size_t i = 0; i < BUNDLE_SIZE; i++)
     {
         double wavelegth = SHORTEST_VISIBLE_WAVELENGTH + (WAVELENTH_RANGE / BUNDLE_SIZE) * i;
-        lightRays.push_front({direction, position, refractiveIndex, intensity / BUNDLE_SIZE, wavelegth});
+        lightRays.push_back({direction, position, refractiveIndex, intensity / BUNDLE_SIZE, wavelegth});
     }
     
     return lightRays;
 }
 
-std::list<LightRay> getDirectionalLightRays(Vector2 position, int width, Vector2 direction, int rayCount, float refractionIndex)
+std::vector<LightRay> getDirectionalLightRays(Vector2 position, int width, Vector2 direction, int rayCount, float refractionIndex)
 {
-    std::list<LightRay> lightRays = {};
-    std::list<LightRay> rayBundle = {};
+    std::vector<LightRay> rayBundle= {};
+    std::vector<LightRay> lightRays = {};
+    lightRays.reserve(BUNDLE_SIZE * rayCount);
     MathX::Vector2 pos{position.x, position.y};
     MathX::Vector2 dir{direction.x, direction.y};
 
