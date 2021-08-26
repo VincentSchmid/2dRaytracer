@@ -19,8 +19,6 @@ class Collision
 
     private:
         std::list<Shape*> shapes;
-
-        int debugVal;
     
     public:
         Collision(std::vector<LightRay> rays, std::list<Shape*> shapes)
@@ -51,7 +49,6 @@ void Collision::check()
             {
                 if ((*itShape)->isColliding( &rays[i] ))
                 {
-                    debugVal = i;
                     //#pragma omp task firstprivate(it)
                     collide(&rays[i], (*itShape));
                 }
