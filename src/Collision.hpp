@@ -78,9 +78,10 @@ int Collision::collide(LightRay *ray, Shape *shape)
         float refractionIndex = (shape->surface->dispersionFunction)(ray->wave_length_nm / 1000.0f);
         //PrintValue(refractionIndex, "Index of Refraction");
         refract(ray, surfaceNormal, shape->isInside(ray) ? IOR_AIR : refractionIndex);
+    } else
+    {
+        ray->direction = {0, 0};
     }
-
-    //ray->direction = {0, 0};
 
     return numNewRays;
 }

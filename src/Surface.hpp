@@ -27,7 +27,7 @@ struct Surface
     float (*dispersionFunction)(float); // Cauchy's equation (Wavelength in micro meters)
 };
 
-struct Surface GLASS = {0.0f, 1.0f, 0.0f, 
+struct Surface GLASS = {.40f, .90f, 0.0f, 
         [](float wavelength_um) -> float
         {
             // function from here https://refractiveindex.info/?shelf=3d&book=glass&page=soda-lime-clear
