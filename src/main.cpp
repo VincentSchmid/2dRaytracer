@@ -66,10 +66,10 @@ int main(void)
 
         if (go)
         {
-            for (size_t i = 0; i < 1000; i++)
+            for (size_t i = 0; i < 100; i++)
             {
                 coll.check();
-                step(coll.rays, GetFrameTime() * 1.0f);
+                step(coll.rays, GetFrameTime() * 10.0f);
             }
         }
 

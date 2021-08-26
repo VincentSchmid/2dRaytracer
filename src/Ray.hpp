@@ -97,7 +97,7 @@ std::vector<LightRay> createRayBundle(MathX::Vector2 direction, MathX::Vector2 p
 
 std::vector<LightRay> getDirectionalLightRays(Vector2 position, int width, Vector2 direction, int rayCount, float refractionIndex)
 {
-    std::vector<LightRay> rayBundle= {};
+    std::vector<LightRay> rayBundle = {};
     std::vector<LightRay> lightRays = {};
     lightRays.reserve(BUNDLE_SIZE * rayCount);
     MathX::Vector2 pos{position.x, position.y};

@@ -61,6 +61,9 @@ void Collision::check()
 
 int Collision::collide(LightRay *ray, Shape *shape)
 {
+    // somehow this is needed to fix read access violation when checking for transmission
+    LightRay tmpRay = *ray;
+    
     int numNewRays = 0;
     MathX::Vector2 surfaceNormal = shape->getNormal(ray->position);
 
