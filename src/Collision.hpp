@@ -26,7 +26,9 @@ class Collision
         Collision(std::vector<LightRay> rays, std::list<Shape*> shapes)
         : rays(rays)
         , shapes(shapes)
-        {};
+        {
+            rays.reserve(10000);
+        };
 
         void check();
 
