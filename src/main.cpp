@@ -37,11 +37,11 @@ int main(void)
     float cameraX = 0.0f;
     float cameraY = 0.0f;
 
-    Triangle triangle = Triangle({800, 415}, 200, &CRAZY_GLASS);
-    Circle circle = Circle({1200, 355}, 100, &CRAZY_GLASS);
+    Triangle triangle = Triangle({800, 415}, 200, &GLASS);
+    Circle circle = Circle({1200, 355}, 100, &GLASS);
 
     std::list<Shape*> shapesInScene = {};
-    shapesInScene.push_back(&circle);
+    //shapesInScene.push_back(&circle);
     shapesInScene.push_back(&triangle);
 
     std::list<LightRay> directionalLight =  getDirectionalLightRays( {100, 250}, 2, {.9, .40}, 21, 1.0f);
