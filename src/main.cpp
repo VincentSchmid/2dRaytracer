@@ -41,7 +41,7 @@ int main(void)
     Circle circle = Circle({1200, 355}, 100, &CRAZY_GLASS);
 
     std::list<Shape*> shapesInScene = {};
-    shapesInScene.push_back(&circle);
+    //shapesInScene.push_back(&circle);
     shapesInScene.push_back(&triangle);
 
     std::list<LightRay> directionalLight =  getDirectionalLightRays( {100, 250}, 2, {.9, .40}, 21, 1.0f);
