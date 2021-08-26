@@ -23,7 +23,8 @@ struct LightRay
         direction.Normalize();
         nextPosition = position;
         prevDirection = direction;
-        positions = { position, position };
+        positions.assign(2, position);
+        positions.reserve(6);
     }
 
     MathX::Vector2 direction; // also referred to as l
@@ -33,7 +34,7 @@ struct LightRay
     float wave_length_nm;
     MathX::Vector2 nextPosition;
     MathX::Vector2 prevDirection;
-    std::list<MathX::Vector2> positions;
+    std::vector<MathX::Vector2> positions;
 };
     
 void step(LightRay &ray, float deltaTime)
