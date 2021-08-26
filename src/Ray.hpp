@@ -6,6 +6,7 @@
 #include "wavelength_rgb.hpp"
 
 #include <list>
+#include <vector>
 
 #define BUNDLE_SIZE 30
 
@@ -22,7 +23,8 @@ struct LightRay
         direction.Normalize();
         nextPosition = position;
         prevDirection = direction;
-        positions = { position, position };
+        positions.assign(2, position);
+        positions.reserve(6);
     }
 
     MathX::Vector2 direction; // also referred to as l
@@ -32,7 +34,7 @@ struct LightRay
     float wave_length_nm;
     MathX::Vector2 nextPosition;
     MathX::Vector2 prevDirection;
-    std::list<MathX::Vector2> positions;
+    std::vector<MathX::Vector2> positions;
 };
     
 void step(LightRay *ray, float deltaTime)
@@ -65,12 +67,10 @@ void drawRay(LightRay *ray)
 {
     MathX::Vector2 prevPos = ray->positions.front();
 
-    std::list<MathX::Vector2>::iterator it;
-
-    for (it = std::next(ray->positions.begin()); it != ray->positions.end(); ++it)
+    for (auto currPos : ray->positions)
     {
-        DrawLineCorrected(prevPos.X, prevPos.Y, it->X, it->Y, waveLengthtoRayLibColor(ray->wave_length_nm, ray->intensity * 255.0f));
-        prevPos = {it->X, it->Y};
+        DrawLineCorrected(prevPos.X, prevPos.Y, currPos.X, currPos.Y, waveLengthtoRayLibColor(ray->wave_length_nm, ray->intensity * 255.0f));
+        prevPos = {currPos.X, currPos.Y};
     }
 }
 
