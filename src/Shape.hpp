@@ -23,8 +23,8 @@ class Shape
         {};
 
         virtual void draw() = 0;
-        virtual bool isColliding(LightRay *ray) = 0;
-        virtual bool isInside(LightRay *ray) = 0;
+        virtual bool isColliding(const LightRay *ray) = 0;
+        virtual bool isInside(const LightRay *ray) = 0;
         virtual MathX::Vector2 getNormal(MathX::Vector2 rayPosition) = 0;
 };
 

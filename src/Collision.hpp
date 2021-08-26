@@ -32,7 +32,7 @@ class Collision
 
     private:
         int collide(LightRay *ray, Shape *shape);
-        LightRay* createNewRay(LightRay *ray);
+        LightRay* createNewRay(const LightRay *ray);
 };
 
 void Collision::check()
@@ -96,7 +96,7 @@ int Collision::collide(LightRay *ray, Shape *shape)
     return numNewRays;
 }
 
-LightRay* Collision::createNewRay(LightRay *ray)
+LightRay* Collision::createNewRay(const LightRay *ray)
 {
     rays.push_back({ray->direction, ray->position, ray->refractionIndex, ray->intensity, ray->wave_length_nm});
     return &rays.back();

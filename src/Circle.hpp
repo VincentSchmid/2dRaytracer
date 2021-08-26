@@ -12,13 +12,13 @@ class Circle : public Shape
         : Shape(position, size, surface) {};
 
         void draw();
-        bool isColliding(LightRay *ray);
-        bool isInside(LightRay *ray);
+        bool isColliding(const LightRay *ray);
+        bool isInside(const LightRay *ray);
         MathX::Vector2 getNormal(MathX::Vector2 rayPosition);
 
     private:
-        bool collisionEnter(LightRay *ray);
-        bool collisionExit(LightRay *ray);
+        bool collisionEnter(const LightRay *ray);
+        bool collisionExit(const LightRay *ray);
 };
 
 void Circle::draw()
@@ -34,22 +34,22 @@ MathX::Vector2 Circle::getNormal(MathX::Vector2 rayPosition)
     return normal;
 }
 
-bool Circle::collisionEnter(LightRay *ray)
+bool Circle::collisionEnter(const LightRay *ray)
 {
     return ray->position.Distance(this->position) > size && ray->nextPosition.Distance(this->position) < size;
 }
 
-bool Circle::collisionExit(LightRay *ray)
+bool Circle::collisionExit(const LightRay *ray)
 {
     return ray->position.Distance(this->position) < size && ray->nextPosition.Distance(this->position) > size;
 }
 
-bool Circle::isInside(LightRay *ray)
+bool Circle::isInside(const LightRay *ray)
 {
     return getNormal(ray->position).Dot(ray->direction) > 0;
 }
 
-bool Circle::isColliding(LightRay *ray)
+bool Circle::isColliding(const LightRay *ray)
 {
     return collisionEnter(ray) || collisionExit(ray);
 }

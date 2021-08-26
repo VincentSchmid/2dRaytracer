@@ -34,13 +34,13 @@ class Triangle : public Shape
         };
 
         void draw();
-        bool isColliding(LightRay *ray);
-        bool isInside(LightRay *ray);
+        bool isColliding(const LightRay *ray);
+        bool isInside(const LightRay *ray);
         MathX::Vector2 getNormal(MathX::Vector2 rayPosition);
 
     private:
-        bool collisionEnter(LightRay *ray);
-        bool collisionExit(LightRay *ray);
+        bool collisionEnter(const LightRay *ray);
+        bool collisionExit(const LightRay *ray);
         float sign(MathX::Vector2 p1, MathX::Vector2 p2, MathX::Vector2 p3);
         bool pointIsInTriangle(MathX::Vector2 pt);
 };
@@ -94,22 +94,22 @@ MathX::Vector2 Triangle::getNormal(MathX::Vector2 rayPosition)
     return normal;
 }
 
-bool Triangle::collisionEnter(LightRay *ray)
+bool Triangle::collisionEnter(const LightRay *ray)
 {
     return !pointIsInTriangle(ray->position) && pointIsInTriangle(ray->nextPosition);
 }
 
-bool Triangle::collisionExit(LightRay *ray)
+bool Triangle::collisionExit(const LightRay *ray)
 {
     return pointIsInTriangle(ray->position) && !pointIsInTriangle(ray->nextPosition);
 }
 
-bool Triangle::isInside(LightRay *ray)
+bool Triangle::isInside(const LightRay *ray)
 {
     return pointIsInTriangle(ray->position);
 }
 
-bool Triangle::isColliding(LightRay *ray)
+bool Triangle::isColliding(const LightRay *ray)
 {
     return collisionEnter(ray) || collisionExit(ray);
 }
