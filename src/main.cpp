@@ -4,6 +4,7 @@
 #include <Shapes/Triangle.hpp>
 #include <Shapes/Surface.hpp>
 #include <Lights/Directional.hpp>
+#include <Lights/PointLight.hpp>
 
 #include "raylib.h"
 
