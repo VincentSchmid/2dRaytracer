@@ -33,4 +33,33 @@ float distanceToLine(MathX::Vector2 point, MathX::Vector2 lineP1, MathX::Vector2
     return point.Distance(intesect_pnt);
 }
 
+std::list<MathX::Vector2> getPointsAlongLine(MathX::Vector2 A, MathX::Vector2 B, int count)
+{
+    std::list<MathX::Vector2> vectors = {};
+    MathX::Vector2 direction = B - A;
+    direction.Normalize();
+
+    float width = A.Distance(B);
+    float spacing = width / count;
+
+    for (int i = 0; i < count; i++)
+    {
+        vectors.push_back(A + (spacing * i) * direction);
+    }
+    
+    return vectors;
+}
+
+std::list<MathX::Vector2> getPointsAlongLine(MathX::Vector2 center, MathX::Vector2 normal, float width, int count)
+{
+    normal.Normalize();
+    MathX::Vector2 left = normal.PerpendicularCounterClockwise();
+    MathX::Vector2 right = normal.PerpendicularClockwise();
+
+    MathX::Vector2 A = center + left * (width / 2.0f);
+    MathX::Vector2 B = A + right * width;
+
+    return getPointsAlongLine(A, B, count);
+}
+
 #endif
