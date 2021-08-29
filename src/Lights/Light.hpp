@@ -22,6 +22,16 @@ class Light
         , raycount(raycount)
         , refractiveIndex(refractiveIndex)
         {};
+
+    protected:
+        void createRay(MathX::Vector2 position, MathX::Vector2 direction, float intensity, float refractiveIndex);
 };
+
+void Light::createRay(MathX::Vector2 position, MathX::Vector2 direction, float intensity, float refractiveIndex)
+{
+    std::list<LightRay> rayBundle = {};
+    rayBundle = createRayBundle(direction, position, refractiveIndex, intensity);
+    rays.insert(rays.end(), rayBundle.begin(), rayBundle.end());
+}
 
 #endif

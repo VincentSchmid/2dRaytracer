@@ -15,8 +15,8 @@ class DirectionalLight : public Light
         float width;
 
     public:
-        DirectionalLight(MathX::Vector2 position, MathX::Vector2 direction, float intensity, float refractionIndex, float width, int rayCount)
-        : Light(position, intensity, rayCount, refractionIndex)
+        DirectionalLight(MathX::Vector2 position, MathX::Vector2 direction, float intensity, float refractiveIndex, float width, int rayCount)
+        : Light(position, intensity, rayCount, refractiveIndex)
         , direction(direction)
         , width(width)
         {
@@ -25,8 +25,7 @@ class DirectionalLight : public Light
             
             for (MathX::Vector2 vector : vectors)
             {
-                rayBundle = createRayBundle(direction, vector, refractionIndex, intensity);
-                rays.insert(rays.end(), rayBundle.begin(), rayBundle.end());
+                createRay(vector, direction, intensity, refractiveIndex);
             }
         };
 
