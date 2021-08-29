@@ -3,6 +3,7 @@
 #include <Shapes/Circle.hpp>
 #include <Shapes/Triangle.hpp>
 #include <Shapes/Surface.hpp>
+#include <Lights/Directional.hpp>
 
 #include "raylib.h"
 
@@ -36,14 +37,12 @@ int main(void)
     Circle circle = Circle({1200, 355}, 100, &GLASS);
 
     std::list<Shape*> shapesInScene = {};
-    //shapesInScene.push_back(&circle);
+    shapesInScene.push_back(&circle);
     shapesInScene.push_back(&triangle);
 
-    std::list<LightRay> directionalLight =  getDirectionalLightRays( {100, 250}, 2, {.9, .40}, 21, 1.0f);
-
-    Collision coll = Collision(&directionalLight, shapesInScene);
+    DirectionalLight lightSource = DirectionalLight({100, 250}, {0.9f, 0.40f}, 2.0f, 21);
+    Collision coll = Collision(lightSource, shapesInScene);
     
-
     SetTargetFPS(60);
     bool go = false;
     //--------------------------------------------------------------------------------------
@@ -63,7 +62,7 @@ int main(void)
             for (size_t i = 0; i < 100; i++)
             {
                 coll.check();
-                step(coll.rays, GetFrameTime() * 10.0f);
+                step(&coll.rays, GetFrameTime() * 10.0f);
             }
         }
 
@@ -72,14 +71,13 @@ int main(void)
             ClearBackground(BLACK);
 
             BeginMode2D(screenSpaceCamera);
-                drawRays(coll.rays);
-                
-                std::list<Shape*>::iterator it;
 
-                for (it = shapesInScene.begin(); it != shapesInScene.end(); ++it)
-                {
-                    (*it)->draw();
-                }
+            drawRays(&coll.rays);
+            
+            for (Shape* shape : shapesInScene)
+            {
+                shape->draw();
+            }
                 
             EndMode2D();
 

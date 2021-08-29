@@ -76,11 +76,9 @@ void drawRay(LightRay *ray)
 
 void drawRays(std::list<LightRay> *rays)
 {
-    std::list<LightRay>::iterator it;
-
-    for (it = rays->begin(); it != rays->end(); ++it)
+    for (LightRay ray : *rays)
     {
-        drawRay(&(*it));
+        drawRay(&ray);
     }
 }
 
@@ -94,38 +92,6 @@ std::list<LightRay> createRayBundle(MathX::Vector2 direction, MathX::Vector2 pos
         lightRays.push_front({direction, position, refractiveIndex, intensity / BUNDLE_SIZE, wavelegth});
     }
     
-    return lightRays;
-}
-
-std::list<LightRay> getDirectionalLightRays(Vector2 position, int width, Vector2 direction, int rayCount, float refractionIndex)
-{
-    std::list<LightRay> lightRays = {};
-    std::list<LightRay> rayBundle = {};
-    MathX::Vector2 pos{position.x, position.y};
-    MathX::Vector2 dir{direction.x, direction.y};
-
-    float spacing = 1.0f * width / rayCount;
-    int isOdd = rayCount % 2;
-
-    dir.Normalize();
-    MathX::Vector2 left = dir.PerpendicularCounterClockwise();
-    MathX::Vector2 right = dir.PerpendicularClockwise();
-    
-    for (size_t i = 0; i < isOdd; i++)
-    {
-        rayBundle = createRayBundle(dir, pos, refractionIndex, 1.0f);
-        lightRays.insert(lightRays.end(), rayBundle.begin(), rayBundle.end());
-    }
-    
-    for (int i = 0; i < (rayCount - isOdd) / 2; i++)
-    {
-        rayBundle = createRayBundle(dir, pos + (left * spacing * (1.0f + i)), refractionIndex, 1.0f);
-        lightRays.insert(lightRays.end(), rayBundle.begin(), rayBundle.end());
-
-        rayBundle = createRayBundle(dir, pos + (right * spacing * (1.0f + i)), refractionIndex, 1.0f);
-        lightRays.insert(lightRays.end(), rayBundle.begin(), rayBundle.end());
-    }
-        
     return lightRays;
 }
 

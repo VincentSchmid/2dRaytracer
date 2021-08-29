@@ -21,7 +21,7 @@ class Triangle : public Shape
     
     public:
         Triangle(MathX::Vector2 position, float size, Surface *surface) 
-        : Shape(position, size, surface) 
+        : Shape(position, size, surface)
         {
             float r = size;
             a = r / (sqrtf(3) / 3.0f);

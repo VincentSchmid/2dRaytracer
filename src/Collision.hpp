@@ -3,25 +3,26 @@
 
 #include "Ray.hpp"
 #include <Shapes/Shape.hpp>
+#include <Lights/Light.hpp>
 
 #include "MathX.h"
 
 
- #define CUTOFF 0.01f
- #define IOR_AIR 1.0f
+#define CUTOFF 0.01f
+#define IOR_AIR 1.0f
 
 
 class Collision
 {
     public:
-        std::list<LightRay> *rays;
+        std::list<LightRay> rays;
 
     private:
         std::list<Shape*> shapes;
     
     public:
-        Collision(std::list<LightRay> *rays, std::list<Shape*> shapes)
-        : rays(rays)
+        Collision(Light source, std::list<Shape*> shapes)
+        : rays(source.rays)
         , shapes(shapes)
         {};
 
@@ -37,7 +38,7 @@ void Collision::check()
     std::list<LightRay>::iterator it;
     std::list<Shape*>::iterator itShape;
 
-    for (it = rays->begin(); it != rays->end(); ++it)
+    for (it = rays.begin(); it != rays.end(); ++it)
     {
         for (itShape = shapes.begin(); itShape != shapes.end(); ++itShape)
         {
@@ -88,8 +89,8 @@ int Collision::collide(LightRay *ray, Shape *shape)
 
 LightRay* Collision::createNewRay(LightRay *ray)
 {
-    rays->push_front({ray->direction, ray->position, ray->refractionIndex, ray->intensity, ray->wave_length_nm});
-    return &(rays->front());
+    rays.push_front({ray->direction, ray->position, ray->refractionIndex, ray->intensity, ray->wave_length_nm});
+    return &(rays.front());
 }
 
 #endif
