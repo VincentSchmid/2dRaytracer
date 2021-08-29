@@ -5,6 +5,8 @@
 #include <Shapes/Surface.hpp>
 #include <Lights/Directional.hpp>
 #include <Lights/PointLight.hpp>
+#include "RayProcessor.hpp"
+#include "RayRenderer.hpp"
 
 #include "raylib.h"
 
@@ -12,6 +14,7 @@
 #include <math.h>
 
 #define SCREEN_HEIGHT 900
+#define MAX_BOUNCES 5
 
 
 int main(void)
@@ -41,14 +44,17 @@ int main(void)
     shapesInScene.push_back(&circle);
     shapesInScene.push_back(&triangle);
 
+    RayRenderer<MAX_BOUNCES> renderer = RayRenderer<MAX_BOUNCES>();
+
     DirectionalLight lightSource = DirectionalLight({100, 250}, {0.9f, 0.40f}, 10.0f, 21);
-    Collision coll = Collision(lightSource, shapesInScene);
+    Collision<5> coll = Collision<5>(&renderer, lightSource, shapesInScene, MAX_BOUNCES);
+    renderer.addRays(&coll.rays);
     
     SetTargetFPS(60);
     bool go = false;
     //--------------------------------------------------------------------------------------
 
-    // Main game loop6
+    // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
 
@@ -63,7 +69,7 @@ int main(void)
             for (size_t i = 0; i < 100; i++)
             {
                 coll.check();
-                step(&coll.rays, GetFrameTime() * 10.0f);
+                step(&renderer, &coll.rays, GetFrameTime() * 10.0f);
             }
         }
 
@@ -73,7 +79,7 @@ int main(void)
 
             BeginMode2D(screenSpaceCamera);
 
-            drawRays(&coll.rays);
+            renderer.drawRays();
             
             for (Shape* shape : shapesInScene)
             {
