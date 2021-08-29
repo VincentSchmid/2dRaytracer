@@ -25,7 +25,7 @@ class DirectionalLight : public Light
             
             for (MathX::Vector2 vector : vectors)
             {
-                rayBundle = createRayBundle(direction, position, refractionIndex, intensity);
+                rayBundle = createRayBundle(direction, vector, refractionIndex, intensity);
                 rays.insert(rays.end(), rayBundle.begin(), rayBundle.end());
             }
         };

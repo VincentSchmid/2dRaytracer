@@ -40,7 +40,7 @@ int main(void)
     shapesInScene.push_back(&circle);
     shapesInScene.push_back(&triangle);
 
-    DirectionalLight lightSource = DirectionalLight({100, 250}, {0.9f, 0.40f}, 2.0f, 21);
+    DirectionalLight lightSource = DirectionalLight({100, 250}, {0.9f, 0.40f}, 10.0f, 21);
     Collision coll = Collision(lightSource, shapesInScene);
     
     SetTargetFPS(60);
