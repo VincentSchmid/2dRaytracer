@@ -5,6 +5,7 @@ INCLUDE_DIRECTORIES(
     c:/dev/vcpkg/installed/x64-windows/include
     C:/dev/MathX/mathLib
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
 LINK_DIRECTORIES(

@@ -7,6 +7,8 @@
 #include <iostream>
 #include <string>
 
+#include "raylib.h"
+
 #define SCREEN_HEIGHT 900
 
 

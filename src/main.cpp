@@ -1,18 +1,13 @@
-#ifndef raylib_h
-#define raylib_h
+#include "Ray.hpp"
+#include "Collision.hpp"
+#include <Shapes/Circle.hpp>
+#include <Shapes/Triangle.hpp>
+#include <Shapes/Surface.hpp>
 
 #include "raylib.h"
 
-#endif
-
-#include "Ray.hpp"
-#include "Collision.hpp"
-#include "Circle.hpp"
-#include "Triangle.hpp"
-#include "Surface.hpp"
-
+#include <list>
 #include <math.h>
-#include <array>
 
 #define SCREEN_HEIGHT 900
 

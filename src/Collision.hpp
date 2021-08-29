@@ -2,7 +2,7 @@
 #define Collision_h
 
 #include "Ray.hpp"
-#include "Shape.hpp"
+#include <Shapes/Shape.hpp>
 
 #include "MathX.h"
 
