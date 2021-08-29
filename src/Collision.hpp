@@ -64,7 +64,7 @@ int Collision<N>::collide(LightRay *ray, Shape *shape)
 
     MathX::Vector2 surfaceNormal = shape->getNormal(ray->position);
 
-    if (ray->bounceCount < maxBounces && ray->intensity > CUTOFF)
+    if (ray->bounceCount <= maxBounces && ray->intensity > CUTOFF)
     {
         if (shape->surface->reflectivity > CUTOFF)
         {
@@ -103,7 +103,7 @@ int Collision<N>::collide(LightRay *ray, Shape *shape)
 template<int N>
 LightRay* Collision<N>::createNewRay(LightRay *ray)
 {
-    rays.push_front({ray->direction, ray->position, ray->refractionIndex, ray->intensity, ray->wave_length_nm, ray->bounceCount});
+    rays.push_front({ray->direction, ray->position, ray->refractionIndex, ray->intensity, ray->wave_length_nm, 0});
     renderer->addRay( &(rays.front()) );
     return &(rays.front());
 }

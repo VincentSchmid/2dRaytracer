@@ -21,44 +21,36 @@ struct rayMoment
 template<int N>
 struct rayEntry
 {
-    unsigned int bounces : 4;
+    int bounces;
     int wave_length_nm;
     std::array<rayMoment, N> moments;
-};
-
-class myequal {
-public:
-   bool operator()(const uintptr_t pntr1, const uintptr_t pntr2) const{
-      return pntr1 == pntr2;
-   }
 };
 
 template<int N>
 class RayRenderer
 {
     private:
-        std::unordered_map<LightRay *, rayEntry<N> *> entryReferences;
+        std::unordered_map<const LightRay *, int> entryReferences;
         std::vector<rayEntry<N>> rays;
+        rayEntry<N> *test;
 
     public:
         RayRenderer(){};
-        void addRay(LightRay *ray);
+        void addRay(const LightRay *ray);
         void addRays(std::list<LightRay> *rays);
-        void addPosition(LightRay *ray);
+        void addPosition(const LightRay *ray);
         void drawRays();
 };
 
 template<int N>
-void RayRenderer<N>::addRay(LightRay *ray)
+void RayRenderer<N>::addRay(const LightRay *ray)
 {
     Vector2 position = {ray->position.X, ray->position.Y};
     rayMoment newMoment{ray->intensity * 255, position};
     rayEntry<N> newEntry{ ray->bounceCount, ray->wave_length_nm, {newMoment, newMoment} };
     rays.push_back(newEntry);
 
-    auto test = &rays.back();
-
-    entryReferences.insert( {ray, &rays.back()} );
+    entryReferences.insert( {ray, rays.size() - 1} );
 }
 
 template<int N>
@@ -68,17 +60,15 @@ void RayRenderer<N>::addRays(std::list<LightRay> *rays)
 
     for (it = rays->begin(); it != rays->end(); ++it)
     {
-        std::cout << &(*it) << "\n";
         addRay(&(*it));
     }
 }
 
 template<int N>
-void RayRenderer<N>::addPosition(LightRay *ray)
+void RayRenderer<N>::addPosition(const LightRay *ray)
 {
-    auto test = entryReferences.find( ray );
-    rayEntry<N> *entry = entryReferences.find( ray )->second;
-
+    int entryIndex = entryReferences.find(ray)->second;
+    rayEntry<N> *entry = &rays[entryIndex];
     entry->bounces = ray->bounceCount;
     Vector2 position = {ray->position.X, ray->position.Y};
     rayMoment newMoment{ray->intensity * 255, position};
@@ -92,7 +82,7 @@ void RayRenderer<N>::drawRays()
     {
         Color rayColor = waveLengthtoRayLibColor(rays[i].wave_length_nm, 1.0f);
 
-        for (int j = 1; j < rays[i].bounces + 1; j++)
+        for (int j = 1; j <= rays[i].bounces + 1; j++)
         {
             Vector2 prevPos = rays[i].moments[j-1].position;
             Vector2 curPos = rays[i].moments[j].position;
