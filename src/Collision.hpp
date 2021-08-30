@@ -3,6 +3,7 @@
 
 #include "Ray.hpp"
 #include "Shape.hpp"
+#include "RayRenderer.hpp"
 
 #include "MathX.h"
 
@@ -11,7 +12,7 @@
 #define CUTOFF 0.01f
 #define IOR_AIR 1.0f
 
-
+template<int N>
 class Collision
 {
     public:
@@ -19,11 +20,15 @@ class Collision
 
     private:
         std::list<Shape*> shapes;
+        int maxBounces;
+        RayRenderer<N> *renderer;
     
     public:
-        Collision(std::vector<LightRay> rays, std::list<Shape*> shapes)
+        Collision(RayRenderer<N> *renderer, std::vector<LightRay> rays, std::list<Shape*> shapes, int maxBounces)
         : rays(rays)
         , shapes(shapes)
+        , renderer(renderer)
+        , maxBounces(maxBounces)
         {
             rays.reserve(10000);
         };
@@ -35,7 +40,8 @@ class Collision
         LightRay* createNewRay(const LightRay *ray);
 };
 
-void Collision::check()
+template<int N>
+void Collision<N>::check()
 {
     std::vector<LightRay>::size_type oldSize = rays.size();
     std::list<Shape*>::iterator itShape;
@@ -58,38 +64,42 @@ void Collision::check()
     //}
 }
 
-int Collision::collide(LightRay *ray, Shape *shape)
+template<int N>
+int Collision<N>::collide(LightRay *ray, Shape *shape)
 {
-    // somehow this is needed to fix read access violation when checking for transmission
-    LightRay tmpRay = *ray;
-    
     int numNewRays = 0;
+    ray->bounceCount++;
+
     MathX::Vector2 surfaceNormal = shape->getNormal(ray->position);
 
-    if (shape->surface->reflectivity > CUTOFF && ray->intensity > CUTOFF)
+    if (ray->bounceCount <= maxBounces && ray->intensity > CUTOFF)
     {
-        LightRay *reflectedRay = createNewRay(ray);
-        reflectedRay->intensity *= shape->surface->reflectivity;
-        numNewRays++;
-        reflect(reflectedRay, surfaceNormal);
-    }
+        if (shape->surface->reflectivity > CUTOFF)
+        {
+            LightRay *reflectedRay = createNewRay(ray);
+            reflectedRay->intensity *= shape->surface->reflectivity;
+            numNewRays++;
+            reflect(reflectedRay, surfaceNormal);
+        }
 
-    /*
-    if (shape->surface->diffuse > CUTOFF && ray->intensity > CUTOFF)
-    {
-        LightRay *scatteredRay = createNewRay(ray);
-        scatteredRay->intensity *= shape->surface->diffuse;
-        numNewRays++;
-        scatter(scatteredRay, surfaceNormal, shape->surface->color);
-    }
-    */
+        /*
+        if (shape->surface->diffuse > CUTOFF && ray->intensity > CUTOFF)
+        {
+            LightRay *scatteredRay = createNewRay(ray);
+            scatteredRay->intensity *= shape->surface->diffuse;
+            numNewRays++;
+            scatter(scatteredRay, surfaceNormal, shape->surface->color);
+        }
+        */
 
-    if (shape->surface->transmission > CUTOFF && ray->intensity > CUTOFF)
-    {
-        ray->intensity *= shape->surface->transmission;
-        float refractionIndex = (shape->surface->dispersionFunction)(ray->wave_length_nm / 1000.0f);
-        //PrintValue(refractionIndex, "Index of Refraction");
-        refract(ray, surfaceNormal, shape->isInside(ray) ? IOR_AIR : refractionIndex);
+        if (shape->surface->transmission > CUTOFF)
+        {
+            ray->intensity *= shape->surface->transmission;
+            float refractionIndex = (shape->surface->dispersionFunction)(ray->wave_length_nm / 1000.0f);
+            //PrintValue(refractionIndex, "Index of Refraction");
+            refract(ray, surfaceNormal, shape->isInside(ray) ? IOR_AIR : refractionIndex);
+        }
+
     } else
     {
         ray->direction = {0, 0};
@@ -98,9 +108,11 @@ int Collision::collide(LightRay *ray, Shape *shape)
     return numNewRays;
 }
 
-LightRay* Collision::createNewRay(const LightRay *ray)
+template<int N>
+LightRay* Collision<N>::createNewRay(const LightRay *ray)
 {
     rays.push_back({ray->direction, ray->position, ray->refractionIndex, ray->intensity, ray->wave_length_nm});
+    renderer->addRay(&rays.back());
     return &rays.back();
 }
 

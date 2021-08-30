@@ -10,12 +10,15 @@
 #include "Circle.hpp"
 #include "Triangle.hpp"
 #include "Surface.hpp"
+#include "RayProcessor.hpp"
+#include "RayRenderer.hpp"
 
 #include <math.h>
 #include <array>
 #include <vector>
 
 #define SCREEN_HEIGHT 900
+#define MAX_BOUNCES 7
 
 
 int main(void)
@@ -47,8 +50,10 @@ int main(void)
 
     std::vector<LightRay> directionalLight =  getDirectionalLightRays( {100, 250}, 2, {.9, .40}, 51, 1.0f);
 
-    Collision coll = Collision(directionalLight, shapesInScene);
-    
+    RayRenderer<MAX_BOUNCES> renderer = RayRenderer<MAX_BOUNCES>();
+
+    Collision<MAX_BOUNCES> coll = Collision<MAX_BOUNCES>(&renderer, directionalLight, shapesInScene, MAX_BOUNCES - 2);
+    renderer.addRays(&coll.rays);
 
     SetTargetFPS(60);
     bool go = false;
@@ -69,7 +74,7 @@ int main(void)
             for (size_t i = 0; i < 100; i++)
             {
                 coll.check();
-                step(coll.rays, GetFrameTime() * 10.0f);
+                step(&renderer, &coll.rays, GetFrameTime() * 10.0f);
             }
         }
 
@@ -77,7 +82,8 @@ int main(void)
             ClearBackground(BLACK);
 
             BeginMode2D(screenSpaceCamera);
-                drawRays(coll.rays);
+                
+                renderer.drawRays();
                 
                 std::list<Shape*>::iterator it;
 

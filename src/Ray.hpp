@@ -23,8 +23,6 @@ struct LightRay
         direction.Normalize();
         nextPosition = position;
         prevDirection = direction;
-        positions.assign(2, position);
-        positions.reserve(6);
     }
 
     MathX::Vector2 direction; // also referred to as l
@@ -32,55 +30,10 @@ struct LightRay
     float refractionIndex; // refered to as ior or n
     float intensity;
     float wave_length_nm;
+    int bounceCount;
     MathX::Vector2 nextPosition;
     MathX::Vector2 prevDirection;
-    std::vector<MathX::Vector2> positions;
 };
-    
-void step(LightRay &ray, float deltaTime)
-{
-    MathX::Vector2 delta_pos = ray.direction * (deltaTime / ray.refractionIndex);
-    ray.position += delta_pos;
-    if (ray.prevDirection != ray.direction)
-    {
-        ray.prevDirection = ray.direction;
-        ray.positions.push_back(ray.position);
-    } else
-    {
-        ray.positions.pop_back();
-        ray.positions.push_back(ray.position);
-    }
-    ray.nextPosition = ray.position + delta_pos;
-}
-
-void step(std::vector<LightRay> &rays, float deltaTime)
-{
-    for (auto i = 0; i < rays.size(); i++)
-    {
-        step(rays[i], deltaTime);
-    }
-}
-
-void drawRay(LightRay &ray)
-{
-    MathX::Vector2 prevPos = ray.positions.front();
-
-    for(MathX::Vector2 pos : ray.positions)
-    {
-        DrawLineCorrected(prevPos.X, prevPos.Y, pos.X, pos.Y, waveLengthtoRayLibColor(ray.wave_length_nm, ray.intensity * 255.0f));
-        prevPos = {pos.X, pos.Y};
-    }
-}
-
-void drawRays(std::vector<LightRay> &rays)
-{
-    std::vector<LightRay>::size_type oldSize = rays.size();
-
-    for (auto i = 0; i < oldSize; i++)
-    {
-        drawRay(rays[i]);
-    }
-}
 
 std::vector<LightRay> createRayBundle(MathX::Vector2 direction, MathX::Vector2 position, float refractiveIndex, float intensity)
 {
