@@ -32,11 +32,11 @@ class RayRenderer
     private:
         std::unordered_map<const LightRay *, int> entryReferences;
         std::vector<rayEntry<N>> rays;
-        rayEntry<N> *test;
 
     public:
         RayRenderer(){};
         void addRay(const LightRay *ray);
+        void addRayCopy(const LightRay *ray, const LightRay *original);
         void addRays(std::list<LightRay> *rays);
         void addPosition(const LightRay *ray);
         void drawRays();
@@ -62,6 +62,18 @@ void RayRenderer<N>::addRays(std::list<LightRay> *rays)
     {
         addRay(&(*it));
     }
+}
+
+template<int N>
+void RayRenderer<N>::addRayCopy(const LightRay *ray, const LightRay *original)
+{
+    int entryIndex = entryReferences.find(original)->second;
+    rayEntry<N> originalEntryCopy = rays[entryIndex];
+    rays.push_back(originalEntryCopy);
+
+    entryReferences.insert( {ray, rays.size() - 1} );
+
+    addPosition(ray);
 }
 
 template<int N>

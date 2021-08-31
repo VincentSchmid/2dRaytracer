@@ -12,6 +12,7 @@
 #define CUTOFF 0.01f
 #define IOR_AIR 1.0f
 
+
 template<int N>
 class Collision
 {
@@ -60,12 +61,13 @@ template<int N>
 int Collision<N>::collide(LightRay *ray, Shape *shape)
 {
     int numNewRays = 0;
-    ray->bounceCount++;
 
     MathX::Vector2 surfaceNormal = shape->getNormal(ray->position);
 
-    if (ray->bounceCount <= maxBounces && ray->intensity > CUTOFF)
+    if (ray->bounceCount < maxBounces && ray->intensity > CUTOFF)
     {
+        ray->bounceCount++;
+        
         if (shape->surface->reflectivity > CUTOFF)
         {
             LightRay *reflectedRay = createNewRay(ray);
@@ -103,9 +105,9 @@ int Collision<N>::collide(LightRay *ray, Shape *shape)
 template<int N>
 LightRay* Collision<N>::createNewRay(LightRay *ray)
 {
-    rays.push_front({ray->direction, ray->position, ray->refractionIndex, ray->intensity, ray->wave_length_nm, 0});
-    renderer->addRay( &(rays.front()) );
-    return &(rays.front());
+    rays.push_front({ray->direction, ray->position, ray->refractionIndex, ray->intensity, ray->wave_length_nm, ray->bounceCount});
+    renderer->addRayCopy(&rays.front(), ray);
+    return(&rays.front());
 }
 
 #endif
