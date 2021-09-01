@@ -7,6 +7,7 @@
 #include <Lights/PointLight.hpp>
 #include "RayProcessor.hpp"
 #include "RayRenderer.hpp"
+#include "timer.hpp"
 
 #include "raylib.h"
 
