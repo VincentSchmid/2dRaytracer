@@ -14,7 +14,7 @@
 #include <math.h>
 
 #define SCREEN_HEIGHT 900
-#define MAX_BOUNCES 7
+#define MAX_BOUNCES 6
 
 
 int main(void)
@@ -46,12 +46,14 @@ int main(void)
 
     RayRenderer<MAX_BOUNCES> renderer = RayRenderer<MAX_BOUNCES>();
 
-    DirectionalLight lightSource = DirectionalLight({100, 250}, {0.9f, 0.40f}, 10.0f, 51);
+    DirectionalLight lightSource = DirectionalLight({100, 250}, {0.9f, 0.40f}, 10.0f, 1);
     Collision<MAX_BOUNCES> coll = Collision<MAX_BOUNCES>(&renderer, lightSource, shapesInScene, MAX_BOUNCES - 2);
     renderer.addRays(&coll.rays);
     
     SetTargetFPS(60);
     bool go = false;
+    double secondsPerFrame = 1.0 / 60.0;
+    Timer timer;
     //--------------------------------------------------------------------------------------
 
     // Main game loop
@@ -66,7 +68,8 @@ int main(void)
 
         if (go)
         {
-            for (size_t i = 0; i < 100; i++)
+            timer.reset();
+            while (timer.seconds_elapsed() < secondsPerFrame)
             {
                 coll.check();
                 step(&renderer, &coll.rays, GetFrameTime() * 10.0f);
