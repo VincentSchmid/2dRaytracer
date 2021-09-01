@@ -35,12 +35,19 @@ struct Surface GLASS = {.40f, .90f, 0.0f,
         }
     };
 
-    struct Surface CRAZY_GLASS = {0.0f, 1.0f, 0.0f, 
-        [](float wavelength_um) -> float
-        {
-            // not realistic properties
-            return 1.5130f - 0.006069f * pow(wavelength_um, 2.0f) + 0.008062f * pow(wavelength_um, -2.0f);
-        }
-    };
+struct Surface CRAZY_GLASS = {0.0f, 1.0f, 0.0f, 
+    [](float wavelength_um) -> float
+    {
+        // not realistic properties
+        return 1.5130f - 0.006069f * pow(wavelength_um, 2.0f) + 0.008062f * pow(wavelength_um, -2.0f);
+    }
+};
+
+struct Surface ABSORBER = {0.0f, 0.0f, 0.0f, 
+    [](float wavelength_um) -> float
+    {
+        return 0;
+    }
+};
 
 #endif
