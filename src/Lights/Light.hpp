@@ -11,17 +11,19 @@ class Light
     public:
         MathX::Vector2 position;
         float intensity;
-        int raycount;
+        int rayCount;
         float refractiveIndex;
         std::list<LightRay> rays;
     
     public:
-        Light(MathX::Vector2 position, float intensity, int raycount, float refractiveIndex)
+        Light(MathX::Vector2 position, float intensity, int rayCount, float refractiveIndex)
         : position(position)
         , intensity(intensity)
-        , raycount(raycount)
+        , rayCount(rayCount)
         , refractiveIndex(refractiveIndex)
         {};
+
+        virtual void castRays() = 0;
 
     protected:
         void createRay(MathX::Vector2 position, MathX::Vector2 direction, float intensity, float refractiveIndex);

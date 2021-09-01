@@ -21,7 +21,7 @@ class DirectionalLight : public Light
         , width(width)
         {
             std::list<LightRay> rayBundle = {};
-            std::list<MathX::Vector2> vectors = getPointsAlongLine(position, direction, width, rayCount);
+            std::list<MathX::Vector2> vectors = getPointsAlongLine(position, direction, width, rayCount, false);
             
             for (MathX::Vector2 vector : vectors)
             {
