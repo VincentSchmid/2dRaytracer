@@ -42,9 +42,19 @@ int main(void)
     Triangle triangle = Triangle({800, 415}, 200, &GLASS);
     Circle circle = Circle({1200, 355}, 100, &GLASS);
 
+    Line boundary1 = Line({screenWidth/2, -1}, {0, 1}, screenWidth, &ABSORBER);
+    Line boundary2 = Line({screenWidth/2, SCREEN_HEIGHT + 1}, {0, -1}, screenWidth, &ABSORBER);
+    Line boundary3 = Line({-1, SCREEN_HEIGHT/2}, {-1, 0}, SCREEN_HEIGHT, &ABSORBER);
+    Line boundary4 = Line({screenWidth + 1, SCREEN_HEIGHT/2}, {1, 0}, SCREEN_HEIGHT, &ABSORBER);
+
     std::list<Shape*> shapesInScene = {};
     shapesInScene.push_back(&circle);
     shapesInScene.push_back(&triangle);
+    shapesInScene.push_back(&boundary1);
+    shapesInScene.push_back(&boundary2);
+    shapesInScene.push_back(&boundary3);
+    shapesInScene.push_back(&boundary4);
+
 
     RayRenderer<MAX_BOUNCES> renderer = RayRenderer<MAX_BOUNCES>();
 
