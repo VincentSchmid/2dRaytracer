@@ -101,13 +101,6 @@ int main(void)
             BeginMode2D(screenSpaceCamera);
 
             renderer.drawRays();
-
-            /*
-            for each (MathX::Vector2 var in getPointsAlongLine({ 100, 100 }, { 200, 150 }, 2, true))
-            {
-                DrawCross(var, 10, RED);
-            }
-            */
             
             for (Shape* shape : shapesInScene)
             {

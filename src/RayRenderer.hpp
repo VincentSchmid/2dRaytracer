@@ -34,7 +34,6 @@ class RayRenderer
         std::vector<rayEntry<N>> rays;
 
     public:
-        RayRenderer() {};
         void addRay(const LightRay *ray);
         void addRayCopy(const LightRay *ray, const LightRay *original);
         void addRays(std::list<LightRay> *rays);
