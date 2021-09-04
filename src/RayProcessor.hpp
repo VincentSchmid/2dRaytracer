@@ -22,7 +22,7 @@ void step(RayRenderer<N> *renderer, std::list<LightRay> *rays, float deltaTime)
 {
     std::list<LightRay>::iterator it;
 
-    rays->remove_if([](LightRay ray) { return ray.direction.X == 0 && ray.direction.Y == 0; });
+    //rays->remove_if([](LightRay ray) { return ray.direction.X == 0 && ray.direction.Y == 0; });
 
 
     for (it = rays->begin(); it != rays->end(); ++it)
