@@ -20,13 +20,7 @@ class DirectionalLight : public Light
         , direction(direction)
         , width(width)
         {
-            std::list<LightRay> rayBundle = {};
-            std::list<MathX::Vector2> vectors = getPointsAlongLine(position, direction, width, rayCount, false);
-            
-            for (MathX::Vector2 vector : vectors)
-            {
-                createRay(vector, direction, intensity, refractiveIndex);
-            }
+            castRays();
         };
 
         DirectionalLight(MathX::Vector2 position, MathX::Vector2 direction, float intensity, float width, int rayCount)
@@ -36,6 +30,21 @@ class DirectionalLight : public Light
         DirectionalLight(MathX::Vector2 position, MathX::Vector2 direction, float width, int rayCount)
         : DirectionalLight(position, direction, 1.0f, 1.0f, width, rayCount)
         {};
+
+        void castRays();
 };
+
+void DirectionalLight::castRays()
+{
+    rays = {};
+    std::list<LightRay> rayBundle = {};
+    
+    std::list<MathX::Vector2> vectors = getPointsAlongLine(position, direction, width, rayCount, true);
+    
+    for (MathX::Vector2 vector : vectors)
+    {
+        createRay(vector, direction, intensity, refractiveIndex);
+    }
+}
 
 #endif

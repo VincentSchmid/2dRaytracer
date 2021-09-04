@@ -34,11 +34,17 @@ class RayRenderer
         std::vector<rayEntry<N>> rays;
 
     public:
-        RayRenderer(){};
+        RayRenderer() {};
         void addRay(const LightRay *ray);
         void addRayCopy(const LightRay *ray, const LightRay *original);
         void addRays(std::list<LightRay> *rays);
+        /**
+        * Adds a new ray to be rendered
+        */
         void addPosition(const LightRay *ray);
+        /**
+        * Adds a new positions (rayMoment) to an existing ray (rayEntry)
+        */
         void drawRays();
 };
 

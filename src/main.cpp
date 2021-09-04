@@ -42,10 +42,10 @@ int main(void)
     Triangle triangle = Triangle({800, 415}, 200, &GLASS);
     Circle circle = Circle({1200, 355}, 100, &GLASS);
 
-    Line boundary1 = Line({screenWidth/2, -1}, {0, 1}, screenWidth, &ABSORBER);
-    Line boundary2 = Line({screenWidth/2, SCREEN_HEIGHT + 1}, {0, -1}, screenWidth, &ABSORBER);
-    Line boundary3 = Line({-1, SCREEN_HEIGHT/2}, {-1, 0}, SCREEN_HEIGHT, &ABSORBER);
-    Line boundary4 = Line({screenWidth + 1, SCREEN_HEIGHT/2}, {1, 0}, SCREEN_HEIGHT, &ABSORBER);
+    Line boundary1 = Line({screenWidth/2, 5}, {0, 1}, screenWidth, &ABSORBER);
+    Line boundary2 = Line({screenWidth/2, SCREEN_HEIGHT - 5}, {0, -1}, screenWidth, &ABSORBER);
+    Line boundary3 = Line({5, SCREEN_HEIGHT/2}, {-1, 0}, SCREEN_HEIGHT, &ABSORBER);
+    Line boundary4 = Line({screenWidth - 5, SCREEN_HEIGHT/2}, {1, 0}, SCREEN_HEIGHT, &ABSORBER);
 
     std::list<Shape*> shapesInScene = {};
     shapesInScene.push_back(&circle);
@@ -59,7 +59,7 @@ int main(void)
     RayRenderer<MAX_BOUNCES> renderer = RayRenderer<MAX_BOUNCES>();
 
     DirectionalLight lightSource = DirectionalLight({100, 250}, {0.9f, 0.40f}, 10.0f, 1);
-    Collision<MAX_BOUNCES> coll = Collision<MAX_BOUNCES>(&renderer, lightSource, shapesInScene, MAX_BOUNCES - 2);
+    Collision<MAX_BOUNCES> coll = Collision<MAX_BOUNCES>(&renderer, (Light &) lightSource, shapesInScene, (unsigned int) MAX_BOUNCES - 2);
     renderer.addRays(&coll.rays);
     
     SetTargetFPS(60);
@@ -86,6 +86,12 @@ int main(void)
                 coll.check();
                 step(&renderer, &coll.rays, GetFrameTime() * 10.0f);
             }
+
+            if (coll.activeRayCount < 2 * BUNDLE_SIZE)
+            {
+                lightSource.castRays();
+                coll.addRays((Light&)lightSource);
+            }
         }
 
         
@@ -95,6 +101,13 @@ int main(void)
             BeginMode2D(screenSpaceCamera);
 
             renderer.drawRays();
+
+            /*
+            for each (MathX::Vector2 var in getPointsAlongLine({ 100, 100 }, { 200, 150 }, 2, true))
+            {
+                DrawCross(var, 10, RED);
+            }
+            */
             
             for (Shape* shape : shapesInScene)
             {

@@ -7,6 +7,7 @@
 #include "RayRenderer.hpp"
 
 #include "MathX.h"
+#include <list>
 
 
 #define CUTOFF 0.01f
@@ -18,6 +19,7 @@ class Collision
 {
     public:
         std::list<LightRay> rays;
+        int activeRayCount;
 
     private:
         std::list<Shape*> shapes;
@@ -25,14 +27,25 @@ class Collision
         RayRenderer<N> *renderer;
     
     public:
-        Collision(RayRenderer<N> *renderer, Light source, std::list<Shape*> shapes, unsigned int maxBounces)
+        Collision(RayRenderer<N> *renderer, const Light &source, std::list<Shape*> shapes, unsigned int maxBounces)
         : renderer(renderer)
         , rays(source.rays)
         , shapes(shapes)
         , maxBounces(maxBounces)
-        {};
+        {
+            activeRayCount = rays.size();
+        };
 
         void check();
+        void addRays(Light &lightSource) { 
+            std::list<LightRay>::iterator tmp = rays.insert(rays.end(), lightSource.rays.begin(), lightSource.rays.end());
+            
+            for (auto it = tmp; it != rays.end(); it++)
+            {
+                renderer->addRay(&(*it));
+                activeRayCount++;
+            }
+        };
 
     private:
         int collide(LightRay *ray, Shape *shape);
@@ -97,6 +110,7 @@ int Collision<N>::collide(LightRay *ray, Shape *shape)
     } else
     {
         ray->direction = {0, 0};
+        activeRayCount--;
     }
 
     return numNewRays;
@@ -105,8 +119,10 @@ int Collision<N>::collide(LightRay *ray, Shape *shape)
 template<int N>
 LightRay* Collision<N>::createNewRay(LightRay *ray)
 {
+    activeRayCount++;
     rays.push_front({ray->direction, ray->position, ray->refractionIndex, ray->intensity, ray->wave_length_nm, ray->bounceCount});
     renderer->addRayCopy(&rays.front(), ray);
+   
     return(&rays.front());
 }
 
