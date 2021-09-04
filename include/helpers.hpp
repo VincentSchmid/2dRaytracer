@@ -37,9 +37,10 @@ void DrawCross(MathX::Vector2 pos, float size, Color color)
     DrawLineCorrected(pos.X, pos.Y - size/2, pos.X, pos.Y + size/2, color);
 }
 
-void Print(std::string text)
+template<typename T>
+void Print(T value)
 {
-    std::cout << text << std::endl;
+    std::cout << value << std::endl;
 }
 
 void PrintVector(MathX::Vector3 vec, std::string name)
