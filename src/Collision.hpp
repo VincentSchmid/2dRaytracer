@@ -74,6 +74,7 @@ template<int N>
 int Collision<N>::collide(LightRay *ray, Shape *shape)
 {
     int numNewRays = 0;
+    bool interacted = false;
 
     MathX::Vector2 surfaceNormal = shape->getNormal(ray->position);
 
@@ -83,6 +84,8 @@ int Collision<N>::collide(LightRay *ray, Shape *shape)
         
         if (shape->surface->reflectivity > CUTOFF)
         {
+            interacted = true;
+
             LightRay *reflectedRay = createNewRay(ray);
             reflectedRay->intensity *= shape->surface->reflectivity;
             numNewRays++;
@@ -101,10 +104,18 @@ int Collision<N>::collide(LightRay *ray, Shape *shape)
 
         if (shape->surface->transmission > CUTOFF)
         {
+            interacted = true;
+
             ray->intensity *= shape->surface->transmission;
             float refractionIndex = (shape->surface->dispersionFunction)(ray->wave_length_nm / 1000.0f);
             //PrintValue(refractionIndex, "Index of Refraction");
             refract(ray, surfaceNormal, shape->isInside(ray) ? IOR_AIR : refractionIndex);
+        }
+
+        if (!interacted)
+        {
+            ray->direction = {0, 0};
+            activeRayCount--;
         }
 
     } else
