@@ -5,8 +5,6 @@
 #include <Shapes/Shape.hpp>
 #include <Lights/Light.hpp>
 
-#include "MathX.h"
-
 
 #define CUTOFF 0.01f
 #define IOR_AIR 1.0f
@@ -53,7 +51,7 @@ void Collision::check()
 int Collision::collide(LightRay *ray, Shape *shape)
 {
     int numNewRays = 0;
-    MathX::Vector2 surfaceNormal = shape->getNormal(ray->position);
+    auto surfaceNormal = shape->getNormal(ray->position);
 
     if (shape->surface->reflectivity > CUTOFF && ray->intensity > CUTOFF)
     {
