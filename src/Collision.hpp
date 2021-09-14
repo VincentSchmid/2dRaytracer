@@ -6,7 +6,6 @@
 #include <Lights/Light.hpp>
 #include "RayRenderer.hpp"
 
-#include "MathX.h"
 #include <list>
 
 
@@ -76,7 +75,7 @@ int Collision<N>::collide(LightRay *ray, Shape *shape)
     int numNewRays = 0;
     bool interacted = false;
 
-    MathX::Vector2 surfaceNormal = shape->getNormal(ray->position);
+    auto surfaceNormal = shape->getNormal(ray->position);
 
     if (ray->bounceCount < maxBounces && ray->intensity > CUTOFF)
     {

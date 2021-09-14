@@ -2,6 +2,7 @@
 #define helpers_h
 
 #include "MathX.h"
+#include "Vector2d.hpp"
 #include "wavelength_rgb.hpp"
 
 #include <iostream>
@@ -22,11 +23,11 @@ void DrawCircleCorrected(int posX, int posY, float radius, Color color)
     DrawCircleLines(posX, SCREEN_HEIGHT - posY, radius, BLUE);
 }
 
-void DrawTriangleCorrected(MathX::Vector2 v1, MathX::Vector2 v2, MathX::Vector2 v3, Color color)
+void DrawTriangleCorrected(Vector2d v1, Vector2d v2, Vector2d v3, Color color)
 {
-    Vector2 cv1 = Vector2{v1.X, SCREEN_HEIGHT - v1.Y};
-    Vector2 cv2 = Vector2{v2.X, SCREEN_HEIGHT - v2.Y};
-    Vector2 cv3 = Vector2{v3.X, SCREEN_HEIGHT - v3.Y};
+    Vector2 cv1 = Vector2{v1.x, SCREEN_HEIGHT - v1.y};
+    Vector2 cv2 = Vector2{v2.x, SCREEN_HEIGHT - v2.y};
+    Vector2 cv3 = Vector2{v3.x, SCREEN_HEIGHT - v3.y};
 
     DrawTriangleLines(cv1, cv2, cv3, color);
 }

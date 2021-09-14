@@ -1,7 +1,7 @@
 #ifndef Shape_h
 #define Shape_h
 
-#include "MathX.h"
+#include "Vector2d.hpp"
 #include "Ray.hpp"
 #include "Surface.hpp"
 
@@ -12,11 +12,11 @@ class Shape
         Surface *surface;
 
     protected:
-        MathX::Vector2 position;
+        Vector2d position;
         float size;
 
     public:
-        Shape(MathX::Vector2 position, float size, Surface *surface) 
+        Shape(Vector2d position, float size, Surface *surface) 
         : position(position)
         , size(size)
         , surface(surface)
@@ -25,7 +25,7 @@ class Shape
         virtual void draw() = 0;
         virtual bool isColliding(LightRay *ray) = 0;
         virtual bool isInside(LightRay *ray) = 0;
-        virtual MathX::Vector2 getNormal(MathX::Vector2 rayPosition) = 0;
+        virtual Vector2d getNormal(Vector2d rayPosition) = 0;
 };
 
 #endif

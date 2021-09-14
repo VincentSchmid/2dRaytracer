@@ -50,7 +50,7 @@ class RayRenderer
 template<int N>
 void RayRenderer<N>::addRay(const LightRay *ray)
 {
-    Vector2 position = {ray->position.X, ray->position.Y};
+    Vector2 position = {ray->position.x, ray->position.y};
     rayMoment newMoment{ray->intensity * 255, position};
     rayEntry<N> newEntry{ ray->bounceCount, ray->wave_length_nm, {newMoment, newMoment} };
     rays.push_back(newEntry);
@@ -87,7 +87,7 @@ void RayRenderer<N>::addPosition(const LightRay *ray)
     int entryIndex = entryReferences.find(ray)->second;
     rayEntry<N> *entry = &rays[entryIndex];
     entry->bounces = ray->bounceCount;
-    Vector2 position = {ray->position.X, ray->position.Y};
+    Vector2 position = {ray->position.x, ray->position.y};
     rayMoment newMoment{ray->intensity * 255, position};
     entry->moments[entry->bounces + 1] = newMoment;
 }

@@ -1,38 +1,39 @@
 #ifndef Linalg_h
 #define Linalg_h
 
-#include "MathX.h"
+#include "Vector2d.hpp"
 
 #include <random>
+#include <list>
 
 
-bool isLineBetweenTwoPoints(MathX::Vector2 lineP1, MathX::Vector2 lineP2, MathX::Vector2 p1, MathX::Vector2 p2)
+bool isLineBetweenTwoPoints(Vector2d lineP1, Vector2d lineP2, Vector2d p1, Vector2d p2)
 {
-    MathX::Vector2 AB = lineP2 - lineP1;
-    MathX::Vector2 AC = p1 - lineP1;
-    MathX::Vector2 AD = p2 - lineP1;
+    Vector2d AB = lineP2 - lineP1;
+    Vector2d AC = p1 - lineP1;
+    Vector2d AD = p2 - lineP1;
     
-    return AB.Cross(AC) * AB.Cross(AD) < 0;
+    return Cross(AB, AC) * Cross(AB, AD) < 0;
 }
 
-bool isVectorPointingBetweenTwoPoints(MathX::Vector2 P1, MathX::Vector2 P2, MathX::Vector2 position, MathX::Vector2 direction)
+bool isVectorPointingBetweenTwoPoints(Vector2d P1, Vector2d P2, Vector2d position, Vector2d direction)
 {
-    MathX::Vector2 A = P1 - position;
-    MathX::Vector2 C = P2 - position;
+    Vector2d A = P1 - position;
+    Vector2d C = P2 - position;
 
-    return A.Cross(direction) * A.Cross(C) >= 0 && C.Cross(direction) * C.Cross(A) >= 0;
+    return Cross(A, direction) * Cross(A, C) >= 0 && Cross(C, direction) * Cross(C, A) >= 0;
 }
 
-float distanceToLine(MathX::Vector2 point, MathX::Vector2 lineP1, MathX::Vector2 lineP2)
+float distanceToLine(Vector2d point, Vector2d lineP1, Vector2d lineP2)
 {
-    MathX::Vector2 direction = lineP2 - lineP1;
-    float orth_intersect = direction.Dot(point - lineP1) / direction.Dot(direction);
-    MathX::Vector2 intesect_pnt = lineP1 + orth_intersect * direction;
+    Vector2d direction = lineP2 - lineP1;
+    float orth_intersect = Dot(direction, (point - lineP1) ) / Dot(direction, direction);
+    Vector2d intesect_pnt = lineP1 + orth_intersect * direction;
 
     intesect_pnt = orth_intersect < 0 ? lineP1 : intesect_pnt;
     intesect_pnt = orth_intersect > 1 ? lineP2 : intesect_pnt;
 
-    return point.Distance(intesect_pnt);
+    return Distance(point, intesect_pnt);
 }
 
 float randRange(float min, float max)
@@ -44,14 +45,14 @@ float randRange(float min, float max)
     return distr(gen);
 }
 
-std::list<MathX::Vector2> getPointsAlongLine(MathX::Vector2 A, MathX::Vector2 B, int count, bool randomDistribution)
+std::list<Vector2d> getPointsAlongLine(Vector2d A, Vector2d B, int count, bool randomDistribution)
 {
-    std::list<MathX::Vector2> vectors = {};
-    MathX::Vector2 direction = B - A;
-    direction.Normalize();
+    std::list<Vector2d> vectors = {};
+    Vector2d direction = B - A;
+    direction = Normalize(direction);
     float distanceFromOrigin;
 
-    float width = A.Distance(B);
+    float width = Distance(A, B);
     float spacing = width / count;
 
     for (int i = 0; i < count; i++)
@@ -67,14 +68,14 @@ std::list<MathX::Vector2> getPointsAlongLine(MathX::Vector2 A, MathX::Vector2 B,
     return vectors;
 }
 
-std::list<MathX::Vector2> getPointsAlongLine(MathX::Vector2 center, MathX::Vector2 normal, float width, int count, bool randomDistribution)
+std::list<Vector2d> getPointsAlongLine(Vector2d center, Vector2d normal, float width, int count, bool randomDistribution)
 {
-    normal.Normalize();
-    MathX::Vector2 left = normal.PerpendicularCounterClockwise();
-    MathX::Vector2 right = normal.PerpendicularClockwise();
+    normal = Normalize(normal);
+    Vector2d left = PerpendicularCounterClockwise(normal);
+    Vector2d right = PerpendicularClockwise(normal);
 
-    MathX::Vector2 A = center + left * (width / 2.0f);
-    MathX::Vector2 B = A + right * width;
+    Vector2d A = center + left * (width / 2.0f);
+    Vector2d B = A + right * width;
 
     return getPointsAlongLine(A, B, count, randomDistribution);
 }

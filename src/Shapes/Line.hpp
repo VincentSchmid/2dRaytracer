@@ -1,7 +1,7 @@
 #ifndef Line_h
 #define Line_h
 
-#include "MathX.h"
+#include "Vector2d.hpp"
 #include "helpers.hpp"
 #include "Linalg.hpp"
 
@@ -11,31 +11,31 @@
 class Line : public Shape 
 {
     private:
-        MathX::Vector2 normal;
-        MathX::Vector2 leftCorner;
-        MathX::Vector2 rightCorner;
+        Vector2d normal;
+        Vector2d leftCorner;
+        Vector2d rightCorner;
 
     public:
-        Line(MathX::Vector2 position, MathX::Vector2 normal, float size, Surface *surface) 
+        Line(Vector2d position, Vector2d normal, float size, Surface *surface) 
         : Shape(position, size, surface)
-        , normal(normal.Normalize())
+        , normal(Normalize(normal))
         {
-            leftCorner = normal.PerpendicularCounterClockwise() * (size / 2.0f) + position;
-            rightCorner = normal.PerpendicularClockwise() * (size / 2.0f) + position;
+            leftCorner = PerpendicularCounterClockwise(normal) * (size / 2.0f) + position;
+            rightCorner = PerpendicularClockwise(normal) * (size / 2.0f) + position;
         };
 
         void draw();
         bool isColliding(LightRay *ray);
         bool isInside(LightRay *ray) { return false; };
-        MathX::Vector2 getNormal(MathX::Vector2 rayPosition) { return normal; };
+        Vector2d getNormal(Vector2d rayPosition) { return normal; };
 };
 
 void Line::draw()
 {
-    //MathX::Vector2 tmp = normal * 100 + position;
-    //DrawLineCorrected(position.X, position.Y, tmp.X, tmp.Y, DARKGREEN);
+    //Vector2d tmp = normal * 100 + position;
+    //DrawLineCorrected(position.x, position.y, tmp.x, tmp.y, DARKGREEN);
 
-    DrawLineCorrected(leftCorner.X, leftCorner.Y, rightCorner.X, rightCorner.Y, Dark_Blue);
+    DrawLineCorrected(leftCorner.x, leftCorner.y, rightCorner.x, rightCorner.y, DARKBLUE);
 }
 
 bool Line::isColliding(LightRay *ray)

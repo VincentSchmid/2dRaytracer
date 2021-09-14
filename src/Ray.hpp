@@ -4,7 +4,7 @@
 #include "helpers.hpp"
 #include "wavelength_rgb.hpp"
 
-#include "MathX.h"
+#include "Vector2d.hpp"
 
 #include <list>
 #include <vector>
@@ -14,7 +14,7 @@
 
 struct LightRay 
 {
-    LightRay(MathX::Vector2 direction, MathX::Vector2 position, float refractionIndex, float intensity, double wave_length_nm, unsigned int bounceCount)
+    LightRay(Vector2d direction, Vector2d position, float refractionIndex, float intensity, double wave_length_nm, unsigned int bounceCount)
     : direction(direction)
     , position(position)
     , refractionIndex(refractionIndex)
@@ -22,22 +22,22 @@ struct LightRay
     , wave_length_nm(wave_length_nm)
     , bounceCount(bounceCount)
     {
-        direction.Normalize();
+        direction = Normalize(direction);
         nextPosition = position;
         prevDirection = direction;
     }
 
-    MathX::Vector2 direction; // also referred to as l
-    MathX::Vector2 position; // refered to as p
+    Vector2d direction; // also referred to as l
+    Vector2d position; // refered to as p
     float refractionIndex; // refered to as ior or n
     float intensity;
     float wave_length_nm;
     unsigned int bounceCount : 4;
-    MathX::Vector2 nextPosition;
-    MathX::Vector2 prevDirection;
+    Vector2d nextPosition;
+    Vector2d prevDirection;
 };
 
-std::list<LightRay> createRayBundle(MathX::Vector2 direction, MathX::Vector2 position, float refractiveIndex, float intensity)
+std::list<LightRay> createRayBundle(Vector2d direction, Vector2d position, float refractiveIndex, float intensity)
 {
     std::list<LightRay> lightRays = {};
 
@@ -50,24 +50,24 @@ std::list<LightRay> createRayBundle(MathX::Vector2 direction, MathX::Vector2 pos
     return lightRays;
 }
 
-void reflect(LightRay *ray, MathX::Vector2 normal)
+void reflect(LightRay *ray, Vector2d normal)
 {
     ray->prevDirection = ray->direction;
-    ray->direction -= 2 * ray->direction.Dot(normal) * normal;
-    ray->direction.Normalize();
+    ray->direction -= 2 * Dot(ray->direction, normal) * normal;
+    Normalize(ray->direction);
 }
 
-void refract(LightRay *ray, MathX::Vector2 normal, float refractionIndex2)
+void refract(LightRay *ray, Vector2d normal, float refractionIndex2)
 {
     float roi = ray->refractionIndex / refractionIndex2;
     ray->prevDirection = ray->direction;
 
-    if (-ray->direction.Dot(normal) < 0)
+    if (-Dot(ray->direction, normal) < 0)
     {
         normal = -normal;
     }
 
-    float c = -ray->direction.Dot(normal);
+    float c = -Dot(ray->direction, normal);
 
     float d = 1.0f - roi * roi * (1.0f - c * c);
 
@@ -79,15 +79,15 @@ void refract(LightRay *ray, MathX::Vector2 normal, float refractionIndex2)
     } else
     {
         ray->direction = roi * ray->direction + (roi * c - sqrt(d)) * normal;
-        ray->direction.Normalize();
+        Normalize(ray->direction);
         ray->refractionIndex = refractionIndex2;
     }
 }
 
-void scatter(LightRay *ray, MathX::Vector2 normal, MathX::Color surfaceColor)
+void scatter(LightRay *ray, Vector2d normal, MathX::Color surfaceColor)
 {
     ray->prevDirection = ray->direction;
-    ray->direction.Zero();
+    ray->direction = Zero();
 }
 
 #endif

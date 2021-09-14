@@ -4,7 +4,7 @@
 #include "Shape.hpp"
 #include "raylib.h"
 #include "helpers.hpp"
-#include "MathX.h"
+#include "Vector2d.hpp"
 #include "Linalg.hpp"
 
 #include <math.h>
@@ -15,44 +15,44 @@ class Triangle : public Shape
 {
     private:
         float a; // length of a side of the triangle
-        MathX::Vector2 v1;
-        MathX::Vector2 v2;
-        MathX::Vector2 v3;
+        Vector2d v1;
+        Vector2d v2;
+        Vector2d v3;
     
     public:
-        Triangle(MathX::Vector2 position, float size, Surface *surface) 
+        Triangle(Vector2d position, float size, Surface *surface) 
         : Shape(position, size, surface)
         {
             float r = size;
             a = r / (sqrtf(3) / 3.0f);
 
-            MathX::Vector2 p0p1 = MathX::Vector2{sqrtf(3) * r / 2.0f, r / 2};
+            Vector2d p0p1 = Vector2d{sqrtf(3) * r / 2.0f, r / 2};
 
-            v1 = MathX::Vector2{position.X, position.Y + r};
-            v2 = MathX::Vector2{position.X - p0p1.X, position.Y - p0p1.Y};
-            v3 = MathX::Vector2{position.X + p0p1.X, position.Y - p0p1.Y};
+            v1 = Vector2d{position.x, position.y + r};
+            v2 = Vector2d{position.x - p0p1.x, position.y - p0p1.y};
+            v3 = Vector2d{position.x + p0p1.x, position.y - p0p1.y};
         };
 
         void draw();
         bool isColliding(LightRay *ray);
         bool isInside(LightRay *ray);
-        MathX::Vector2 getNormal(MathX::Vector2 rayPosition);
+        Vector2d getNormal(Vector2d rayPosition);
 
     private:
         bool collisionEnter(LightRay *ray);
         bool collisionExit(LightRay *ray);
-        float sign(MathX::Vector2 p1, MathX::Vector2 p2, MathX::Vector2 p3);
-        bool pointIsInTriangle(MathX::Vector2 pt);
+        float sign(Vector2d p1, Vector2d p2, Vector2d p3);
+        bool pointIsInTriangle(Vector2d pt);
 };
 
 void Triangle::draw()
 {
     /*
     //normals
-    auto drawNormal = [this](MathX::Vector2 p1, MathX::Vector2 p2, float normalLength, Color color) {
-        MathX::Vector2 tmp = p1 + ((p2 - p1) / 2);
-        MathX::Vector2 tmpNrml = getNormal(tmp) * normalLength + tmp;
-        DrawLineCorrected(tmp.X, tmp.Y, tmpNrml.X, tmpNrml.Y, color);
+    auto drawNormal = [this](Vector2d p1, Vector2d p2, float normalLength, Color color) {
+        Vector2d tmp = p1 + ((p2 - p1) / 2);
+        Vector2d tmpNrml = getNormal(tmp) * normalLength + tmp;
+        DrawLineCorrected(tmp.x, tmp.y, tmpNrml.x, tmpNrml.y, color);
     };
 
     drawNormal(v1, v2, 100.0f, RED);
@@ -63,9 +63,9 @@ void Triangle::draw()
     DrawTriangleCorrected(v1, v2, v3, BLUE);
 }
 
-MathX::Vector2 Triangle::getNormal(MathX::Vector2 rayPosition)
+Vector2d Triangle::getNormal(Vector2d rayPosition)
 {
-    MathX::Vector2 normal;
+    Vector2d normal;
 
     float d1 = distanceToLine(rayPosition, v1, v2);
     float d2 = distanceToLine(rayPosition, v1, v3);
@@ -88,10 +88,9 @@ MathX::Vector2 Triangle::getNormal(MathX::Vector2 rayPosition)
     {
         normal = v2 - v3;
     }
-    normal = normal.PerpendicularCounterClockwise();
-    normal.Normalize();
+    normal = PerpendicularCounterClockwise(normal);
 
-    return normal;
+    return Normalize(normal);
 }
 
 bool Triangle::collisionEnter(LightRay *ray)
@@ -114,12 +113,12 @@ bool Triangle::isColliding(LightRay *ray)
     return collisionEnter(ray) || collisionExit(ray);
 }
 
-float Triangle::sign (MathX::Vector2 p1, MathX::Vector2 p2, MathX::Vector2 p3)
+float Triangle::sign (Vector2d p1, Vector2d p2, Vector2d p3)
 {
-    return (p1.X - p3.X) * (p2.Y - p3.Y) - (p2.X - p3.X) * (p1.Y - p3.Y);
+    return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
 }
 
-bool Triangle::pointIsInTriangle(MathX::Vector2 pt)
+bool Triangle::pointIsInTriangle(Vector2d pt)
 {
     float d1, d2, d3;
     bool has_neg, has_pos;
