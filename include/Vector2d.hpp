@@ -7,14 +7,14 @@
 struct Vector2d
 {
     Vector2d() 
-    : vec({0.0f, 0.0f})
+    : vec({0.0f, 0.0f, 0.0f})
     {}
 
     Vector2d(float x, float y)
-    : vec({x, y})
+    : vec({x, y, 0})
     {}
 
-    Vector2d(blaze::StaticVector<float,2UL> vec)
+    Vector2d(blaze::StaticVector<float,3UL> vec)
     : vec(vec)
     {}
 
@@ -37,7 +37,7 @@ struct Vector2d
 
         struct
         {
-            blaze::StaticVector<float,2UL> vec;
+            blaze::StaticVector<float,3UL> vec;
         };
     };
 
@@ -77,9 +77,7 @@ struct Vector2d
 
 float Cross(Vector2d A, Vector2d B)
 {
-    blaze::StaticVector<float,3UL> vec1 = {A.vec[0], A.vec[1], 0.0f};
-    blaze::StaticVector<float,3UL> vec2 = {B.vec[0], B.vec[1], 0.0f};
-    return blaze::cross(vec1, vec2)[2];
+    return blaze::cross(A.vec, B.vec)[2];
 }
 
 float Dot(Vector2d A, Vector2d B)
@@ -104,18 +102,20 @@ Vector2d Zero()
 
 Vector2d PerpendicularClockwise(Vector2d A)
 {
-    blaze::StaticVector<float,2UL> newVec;
+    blaze::StaticVector<float,3UL> newVec;
     newVec[0] = A.vec[1];
     newVec[1] = -A.vec[0];
+    newVec[2] = 0;
 
     return Vector2d(newVec);
 }
 
 Vector2d PerpendicularCounterClockwise(Vector2d A)
 {
-    blaze::StaticVector<float,2UL> newVec;
+    blaze::StaticVector<float,3UL> newVec;
     newVec[0] = -A.vec[1];
     newVec[1] = A.vec[0];
+    newVec[2] = 0;
 
     return Vector2d(newVec);
 }
