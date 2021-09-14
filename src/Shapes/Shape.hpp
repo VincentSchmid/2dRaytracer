@@ -1,9 +1,10 @@
 #ifndef Shape_h
 #define Shape_h
 
-#include "MathX.h"
 #include "Ray.hpp"
 #include "Surface.hpp"
+
+#include <blaze/Blaze.h>
 
 
 class Shape
@@ -12,11 +13,11 @@ class Shape
         Surface *surface;
 
     protected:
-        MathX::Vector2 position;
+        blaze::StaticVector<float,2UL> position;
         float size;
 
     public:
-        Shape(MathX::Vector2 position, float size, Surface *surface) 
+        Shape(blaze::StaticVector<float,2UL> position, float size, Surface *surface) 
         : position(position)
         , size(size)
         , surface(surface)
@@ -25,7 +26,7 @@ class Shape
         virtual void draw() = 0;
         virtual bool isColliding(LightRay *ray) = 0;
         virtual bool isInside(LightRay *ray) = 0;
-        virtual MathX::Vector2 getNormal(MathX::Vector2 rayPosition) = 0;
+        virtual blaze::StaticVector<float,2UL> getNormal(blaze::StaticVector<float,2UL> rayPosition) = 0;
 };
 
 #endif

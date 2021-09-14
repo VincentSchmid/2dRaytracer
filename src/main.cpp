@@ -1,3 +1,5 @@
+#include "raylib.h"
+
 #include "Ray.hpp"
 #include "Collision.hpp"
 #include <Shapes/Circle.hpp>
@@ -9,8 +11,6 @@
 #include "RayProcessor.hpp"
 #include "RayRenderer.hpp"
 #include "timer.hpp"
-
-#include "raylib.h"
 
 #include <list>
 #include <math.h>
@@ -93,7 +93,6 @@ int main(void)
                 coll.addRays((Light&)lightSource);
             }
         }
-
         
         BeginDrawing();
             ClearBackground(BLACK);

@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <string>
+#include <blaze/Blaze.h>
 
 #include "raylib.h"
 
@@ -19,14 +20,14 @@ void DrawLineCorrected(int x1, int y1, int x2, int y2, Color color)
 
 void DrawCircleCorrected(int posX, int posY, float radius, Color color)
 {
-    DrawCircleLines(posX, SCREEN_HEIGHT - posY, radius, BLUE);
+    DrawCircleLines(posX, SCREEN_HEIGHT - posY, radius, DARKBLUE);
 }
 
-void DrawTriangleCorrected(MathX::Vector2 v1, MathX::Vector2 v2, MathX::Vector2 v3, Color color)
+void DrawTriangleCorrected(blaze::StaticVector<float,2UL> v1, blaze::StaticVector<float,2UL> v2, blaze::StaticVector<float,2UL> v3, Color color)
 {
-    Vector2 cv1 = Vector2{v1.X, SCREEN_HEIGHT - v1.Y};
-    Vector2 cv2 = Vector2{v2.X, SCREEN_HEIGHT - v2.Y};
-    Vector2 cv3 = Vector2{v3.X, SCREEN_HEIGHT - v3.Y};
+    Vector2 cv1 = Vector2{v1[0], SCREEN_HEIGHT - v1[1]};
+    Vector2 cv2 = Vector2{v2[0], SCREEN_HEIGHT - v2[1]};
+    Vector2 cv3 = Vector2{v3[0], SCREEN_HEIGHT - v3[1]};
 
     DrawTriangleLines(cv1, cv2, cv3, color);
 }

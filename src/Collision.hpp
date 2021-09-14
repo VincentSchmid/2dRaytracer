@@ -9,7 +9,6 @@
 #include "MathX.h"
 #include <list>
 
-
 #define CUTOFF 0.01f
 #define IOR_AIR 1.0f
 

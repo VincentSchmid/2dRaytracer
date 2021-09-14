@@ -1,7 +1,7 @@
 #ifndef Surface_h
 #define Surface_h
 
-#include "MathX.h"
+#include <blaze/Blaze.h>
 #include <math.h>
 
 

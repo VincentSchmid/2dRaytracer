@@ -1,41 +1,41 @@
 #ifndef Line_h
 #define Line_h
 
-#include "MathX.h"
 #include "helpers.hpp"
 #include "Linalg.hpp"
 
 #include <iostream>
+#include <blaze/Blaze.h>
 
 
 class Line : public Shape 
 {
     private:
-        MathX::Vector2 normal;
-        MathX::Vector2 leftCorner;
-        MathX::Vector2 rightCorner;
+        blaze::StaticVector<float,2UL> normal;
+        blaze::StaticVector<float,2UL> leftCorner;
+        blaze::StaticVector<float,2UL> rightCorner;
 
     public:
-        Line(MathX::Vector2 position, MathX::Vector2 normal, float size, Surface *surface) 
+        Line(blaze::StaticVector<float,2UL> position, blaze::StaticVector<float,2UL> normal, float size, Surface *surface) 
         : Shape(position, size, surface)
-        , normal(normal.Normalize())
+        , normal(blaze::norm(normal))
         {
-            leftCorner = normal.PerpendicularCounterClockwise() * (size / 2.0f) + position;
-            rightCorner = normal.PerpendicularClockwise() * (size / 2.0f) + position;
+            leftCorner = PerpendicularCounterClockwise(normal) * (size / 2.0f) + position;
+            rightCorner = PerpendicularClockwise(normal) * (size / 2.0f) + position;
         };
 
         void draw();
         bool isColliding(LightRay *ray);
         bool isInside(LightRay *ray) { return false; };
-        MathX::Vector2 getNormal(MathX::Vector2 rayPosition) { return normal; };
+        blaze::StaticVector<float,2UL> getNormal(blaze::StaticVector<float,2UL> rayPosition) { return normal; };
 };
 
 void Line::draw()
 {
-    //MathX::Vector2 tmp = normal * 100 + position;
-    //DrawLineCorrected(position.X, position.Y, tmp.X, tmp.Y, DARKGREEN);
+    //blaze::StaticVector<float,2UL> tmp = normal * 100 + position;
+    //DrawLineCorrected(position[0], position[1], tmp[0], tmp[1], DARKGREEN);
 
-    DrawLineCorrected(leftCorner.X, leftCorner.Y, rightCorner.X, rightCorner.Y, Dark_Blue);
+    DrawLineCorrected(leftCorner[0], leftCorner[1], rightCorner[0], rightCorner[1], Dark_Blue);
 }
 
 bool Line::isColliding(LightRay *ray)

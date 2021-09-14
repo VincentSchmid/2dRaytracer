@@ -4,17 +4,19 @@
 #include "Shape.hpp"
 #include "helpers.hpp"
 
+#include <blaze/Blaze.h>
+
 
 class Circle : public Shape
 {
     public:
-        Circle(MathX::Vector2 position, float size, Surface *surface) 
+        Circle(blaze::StaticVector<float,2UL> position, float size, Surface *surface) 
         : Shape(position, size, surface) {};
 
         void draw();
         bool isColliding(LightRay *ray);
         bool isInside(LightRay *ray);
-        MathX::Vector2 getNormal(MathX::Vector2 rayPosition);
+        blaze::StaticVector<float,2UL> getNormal(blaze::StaticVector<float,2UL> rayPosition);
 
     private:
         bool collisionEnter(LightRay *ray);
@@ -23,30 +25,30 @@ class Circle : public Shape
 
 void Circle::draw()
 {
-    DrawCircleCorrected(position.X, position.Y, size, BLUE);
+    DrawCircleCorrected(position[0], position[1], size, BLUE);
 }
 
-MathX::Vector2 Circle::getNormal(MathX::Vector2 rayPosition)
+blaze::StaticVector<float,2UL> Circle::getNormal(blaze::StaticVector<float,2UL> rayPosition)
 {
-    MathX::Vector2 normal = rayPosition - position;
-    normal.Normalize();
+    blaze::StaticVector<float,2UL> normal = rayPosition - position;
+    normal = blaze::normalize(normal);
 
     return normal;
 }
 
 bool Circle::collisionEnter(LightRay *ray)
 {
-    return ray->position.Distance(this->position) > size && ray->nextPosition.Distance(this->position) < size;
+    return blaze::sqrNorm(ray->position - this->position) > (size * size) && blaze::sqrNorm(ray->nextPosition - this->position) < (size * size);
 }
 
 bool Circle::collisionExit(LightRay *ray)
 {
-    return ray->position.Distance(this->position) < size && ray->nextPosition.Distance(this->position) > size;
+    return blaze::sqrNorm(ray->position - this->position) < (size * size) && blaze::sqrNorm(ray->nextPosition - this->position) > (size * size);
 }
 
 bool Circle::isInside(LightRay *ray)
 {
-    return getNormal(ray->position).Dot(ray->direction) > 0;
+    return blaze::dot(getNormal(ray->position), ray->direction) > 0;
 }
 
 bool Circle::isColliding(LightRay *ray)

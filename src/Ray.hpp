@@ -4,7 +4,7 @@
 #include "helpers.hpp"
 #include "wavelength_rgb.hpp"
 
-#include "MathX.h"
+#include <blaze/Blaze.h>
 
 #include <list>
 #include <vector>
@@ -14,7 +14,7 @@
 
 struct LightRay 
 {
-    LightRay(MathX::Vector2 direction, MathX::Vector2 position, float refractionIndex, float intensity, double wave_length_nm, unsigned int bounceCount)
+    LightRay(blaze::StaticVector<float,2UL> direction, blaze::StaticVector<float,2UL> position, float refractionIndex, float intensity, double wave_length_nm, unsigned int bounceCount)
     : direction(direction)
     , position(position)
     , refractionIndex(refractionIndex)
@@ -22,22 +22,22 @@ struct LightRay
     , wave_length_nm(wave_length_nm)
     , bounceCount(bounceCount)
     {
-        direction.Normalize();
+        direction = blaze::normalize(direction);
         nextPosition = position;
         prevDirection = direction;
     }
 
-    MathX::Vector2 direction; // also referred to as l
-    MathX::Vector2 position; // refered to as p
+    blaze::StaticVector<float,2UL> direction; // also referred to as l
+    blaze::StaticVector<float,2UL> position; // refered to as p
     float refractionIndex; // refered to as ior or n
     float intensity;
     float wave_length_nm;
     unsigned int bounceCount : 4;
-    MathX::Vector2 nextPosition;
-    MathX::Vector2 prevDirection;
+    blaze::StaticVector<float,2UL> nextPosition;
+    blaze::StaticVector<float,2UL> prevDirection;
 };
 
-std::list<LightRay> createRayBundle(MathX::Vector2 direction, MathX::Vector2 position, float refractiveIndex, float intensity)
+std::list<LightRay> createRayBundle(blaze::StaticVector<float,2UL> direction, blaze::StaticVector<float,2UL> position, float refractiveIndex, float intensity)
 {
     std::list<LightRay> lightRays = {};
 
@@ -50,24 +50,23 @@ std::list<LightRay> createRayBundle(MathX::Vector2 direction, MathX::Vector2 pos
     return lightRays;
 }
 
-void reflect(LightRay *ray, MathX::Vector2 normal)
+void reflect(LightRay *ray, blaze::StaticVector<float,2UL> normal)
 {
     ray->prevDirection = ray->direction;
-    ray->direction -= 2 * ray->direction.Dot(normal) * normal;
-    ray->direction.Normalize();
+    ray->direction -= 2 * blaze::dot(ray->direction, normal) * normal;
+    ray->direction = blaze::normalize(ray->direction);
 }
 
-void refract(LightRay *ray, MathX::Vector2 normal, float refractionIndex2)
+void refract(LightRay *ray, blaze::StaticVector<float,2UL> normal, float refractionIndex2)
 {
     float roi = ray->refractionIndex / refractionIndex2;
     ray->prevDirection = ray->direction;
 
-    if (-ray->direction.Dot(normal) < 0)
+    if (blaze::dot(-ray->direction, normal) < 0)
     {
         normal = -normal;
     }
-
-    float c = -ray->direction.Dot(normal);
+    float c = blaze::dot(-ray->direction, normal);
 
     float d = 1.0f - roi * roi * (1.0f - c * c);
 
@@ -79,15 +78,16 @@ void refract(LightRay *ray, MathX::Vector2 normal, float refractionIndex2)
     } else
     {
         ray->direction = roi * ray->direction + (roi * c - sqrt(d)) * normal;
-        ray->direction.Normalize();
+        ray->direction = blaze::normalize(ray->direction);
+
         ray->refractionIndex = refractionIndex2;
     }
 }
 
-void scatter(LightRay *ray, MathX::Vector2 normal, MathX::Color surfaceColor)
+void scatter(LightRay *ray, blaze::StaticVector<float,2UL> normal, MathX::Color surfaceColor)
 {
     ray->prevDirection = ray->direction;
-    ray->direction.Zero();
+    ray->direction = blaze::zero<float>(2UL);
 }
 
 #endif

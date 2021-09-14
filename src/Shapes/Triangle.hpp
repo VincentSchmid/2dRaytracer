@@ -4,55 +4,55 @@
 #include "Shape.hpp"
 #include "raylib.h"
 #include "helpers.hpp"
-#include "MathX.h"
 #include "Linalg.hpp"
 
 #include <math.h>
 #include <functional>
+#include <blaze/Blaze.h>
 
 
 class Triangle : public Shape
 {
     private:
         float a; // length of a side of the triangle
-        MathX::Vector2 v1;
-        MathX::Vector2 v2;
-        MathX::Vector2 v3;
+        blaze::StaticVector<float,2UL> v1;
+        blaze::StaticVector<float,2UL> v2;
+        blaze::StaticVector<float,2UL> v3;
     
     public:
-        Triangle(MathX::Vector2 position, float size, Surface *surface) 
+        Triangle(blaze::StaticVector<float,2UL> position, float size, Surface *surface) 
         : Shape(position, size, surface)
         {
             float r = size;
             a = r / (sqrtf(3) / 3.0f);
 
-            MathX::Vector2 p0p1 = MathX::Vector2{sqrtf(3) * r / 2.0f, r / 2};
+            blaze::StaticVector<float,2UL> p0p1 = blaze::StaticVector<float,2UL>{sqrtf(3) * r / 2.0f, r / 2};
 
-            v1 = MathX::Vector2{position.X, position.Y + r};
-            v2 = MathX::Vector2{position.X - p0p1.X, position.Y - p0p1.Y};
-            v3 = MathX::Vector2{position.X + p0p1.X, position.Y - p0p1.Y};
+            v1 = blaze::StaticVector<float,2UL>{position[0], position[1] + r};
+            v2 = blaze::StaticVector<float,2UL>{position[0] - p0p1[0], position[1] - p0p1[1]};
+            v3 = blaze::StaticVector<float,2UL>{position[0] + p0p1[0], position[1] - p0p1[1]};
         };
 
         void draw();
         bool isColliding(LightRay *ray);
         bool isInside(LightRay *ray);
-        MathX::Vector2 getNormal(MathX::Vector2 rayPosition);
+        blaze::StaticVector<float,2UL> getNormal(blaze::StaticVector<float,2UL> rayPosition);
 
     private:
         bool collisionEnter(LightRay *ray);
         bool collisionExit(LightRay *ray);
-        float sign(MathX::Vector2 p1, MathX::Vector2 p2, MathX::Vector2 p3);
-        bool pointIsInTriangle(MathX::Vector2 pt);
+        float sign(blaze::StaticVector<float,2UL> p1, blaze::StaticVector<float,2UL> p2, blaze::StaticVector<float,2UL> p3);
+        bool pointIsInTriangle(blaze::StaticVector<float,2UL> pt);
 };
 
 void Triangle::draw()
 {
     /*
     //normals
-    auto drawNormal = [this](MathX::Vector2 p1, MathX::Vector2 p2, float normalLength, Color color) {
-        MathX::Vector2 tmp = p1 + ((p2 - p1) / 2);
-        MathX::Vector2 tmpNrml = getNormal(tmp) * normalLength + tmp;
-        DrawLineCorrected(tmp.X, tmp.Y, tmpNrml.X, tmpNrml.Y, color);
+    auto drawNormal = [this](blaze::StaticVector<float,2UL> p1, blaze::StaticVector<float,2UL> p2, float normalLength, Color color) {
+        blaze::StaticVector<float,2UL> tmp = p1 + ((p2 - p1) / 2);
+        blaze::StaticVector<float,2UL> tmpNrml = getNormal(tmp) * normalLength + tmp;
+        DrawLineCorrected(tmp[0], tmp[1], tmpNrml[0], tmpNrml[1], color);
     };
 
     drawNormal(v1, v2, 100.0f, RED);
@@ -63,9 +63,9 @@ void Triangle::draw()
     DrawTriangleCorrected(v1, v2, v3, BLUE);
 }
 
-MathX::Vector2 Triangle::getNormal(MathX::Vector2 rayPosition)
+blaze::StaticVector<float,2UL> Triangle::getNormal(blaze::StaticVector<float,2UL> rayPosition)
 {
-    MathX::Vector2 normal;
+    blaze::StaticVector<float,2UL> normal;
 
     float d1 = distanceToLine(rayPosition, v1, v2);
     float d2 = distanceToLine(rayPosition, v1, v3);
@@ -88,10 +88,9 @@ MathX::Vector2 Triangle::getNormal(MathX::Vector2 rayPosition)
     {
         normal = v2 - v3;
     }
-    normal = normal.PerpendicularCounterClockwise();
-    normal.Normalize();
+    normal = PerpendicularCounterClockwise(normal);
 
-    return normal;
+    return blaze::normalize(normal);
 }
 
 bool Triangle::collisionEnter(LightRay *ray)
@@ -114,12 +113,12 @@ bool Triangle::isColliding(LightRay *ray)
     return collisionEnter(ray) || collisionExit(ray);
 }
 
-float Triangle::sign (MathX::Vector2 p1, MathX::Vector2 p2, MathX::Vector2 p3)
+float Triangle::sign (blaze::StaticVector<float,2UL> p1, blaze::StaticVector<float,2UL> p2, blaze::StaticVector<float,2UL> p3)
 {
-    return (p1.X - p3.X) * (p2.Y - p3.Y) - (p2.X - p3.X) * (p1.Y - p3.Y);
+    return (p1[0] - p3[0]) * (p2[1] - p3[1]) - (p2[0] - p3[0]) * (p1[1] - p3[1]);
 }
 
-bool Triangle::pointIsInTriangle(MathX::Vector2 pt)
+bool Triangle::pointIsInTriangle(blaze::StaticVector<float,2UL> pt)
 {
     float d1, d2, d3;
     bool has_neg, has_pos;

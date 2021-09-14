@@ -3,19 +3,19 @@
 
 #include "Linalg.hpp"
 #include "Ray.hpp"
-#include "MathX.h"
 
+#include <blaze/Blaze.h>
 #include <list>
 
 
 class DirectionalLight : public Light
 {
     private:
-        MathX::Vector2 direction;
+        blaze::StaticVector<float,2UL> direction;
         float width;
 
     public:
-        DirectionalLight(MathX::Vector2 position, MathX::Vector2 direction, float intensity, float refractiveIndex, float width, int rayCount)
+        DirectionalLight(blaze::StaticVector<float,2UL> position, blaze::StaticVector<float,2UL> direction, float intensity, float refractiveIndex, float width, int rayCount)
         : Light(position, intensity, rayCount, refractiveIndex)
         , direction(direction)
         , width(width)
@@ -23,11 +23,11 @@ class DirectionalLight : public Light
             castRays();
         };
 
-        DirectionalLight(MathX::Vector2 position, MathX::Vector2 direction, float intensity, float width, int rayCount)
+        DirectionalLight(blaze::StaticVector<float,2UL> position, blaze::StaticVector<float,2UL> direction, float intensity, float width, int rayCount)
         : DirectionalLight(position, direction, intensity, 1.0f, width, rayCount)
         {};
 
-        DirectionalLight(MathX::Vector2 position, MathX::Vector2 direction, float width, int rayCount)
+        DirectionalLight(blaze::StaticVector<float,2UL> position, blaze::StaticVector<float,2UL> direction, float width, int rayCount)
         : DirectionalLight(position, direction, 1.0f, 1.0f, width, rayCount)
         {};
 
@@ -39,9 +39,9 @@ void DirectionalLight::castRays()
     rays = {};
     std::list<LightRay> rayBundle = {};
     
-    std::list<MathX::Vector2> vectors = getPointsAlongLine(position, direction, width, rayCount, true);
+    std::list<blaze::StaticVector<float,2UL>> vectors = getPointsAlongLine(position, direction, width, rayCount, true);
     
-    for (MathX::Vector2 vector : vectors)
+    for (blaze::StaticVector<float,2UL> vector : vectors)
     {
         createRay(vector, direction, intensity, refractiveIndex);
     }
